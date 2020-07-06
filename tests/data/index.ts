@@ -1,2 +1,2 @@
-import post from './post';
-export { post };
+export { postTitleImage, postTitleOnly } from './post';
+// export { postTitleImage, postTitleOnly };
