@@ -37,7 +37,7 @@ describe('Post', () => {
     const imgSelector = `${postTitleImage.id}-image`;
     const imgElement = container.querySelector(`img[id=${imgSelector}]`);
     expect(imgElement).not.toBeNull();
-    expect(imgElement?.getAttribute('src')).toMatch(postTitleImage.thumbnail);
+    expect(imgElement?.getAttribute('src')).toMatch(postTitleImage.image);
   });
 
   it("does not render an image when the post doesn't have an image", () => {
@@ -51,5 +51,48 @@ describe('Post', () => {
     const imgSelector = `${postTitleOnly.id}-image`;
     const imgElement = container.querySelector(`img[id=${imgSelector}]`);
     expect(imgElement).toBeNull();
+  });
+
+  it('renders a selftext when the post does have a selftext', () => {
+    // Arrange
+    const component = <Post {...postTitleOnly} />;
+
+    // Act
+    render(component);
+    console.log(container.innerHTML);
+    // Assert
+    const stSelector = `${postTitleOnly.id}-selftext`;
+    const stElement = container.querySelector(`div[id=${stSelector}]`);
+    expect(stElement).not.toBeNull();
+    expect(stElement?.textContent).toMatch(postTitleImage.selftext);
+  });
+
+  it("does not render a selftext when the post doesn't have a selftext", () => {
+    // Arrange
+    const component = <Post {...postTitleOnly} />;
+
+    // Act
+    render(component);
+    console.log(container.innerHTML);
+
+    // Assert
+    const stSelector = `${postTitleImage.id}-selftext`;
+    const stElement = container.querySelector(`img[id=${stSelector}]`);
+    expect(stElement).toBeNull();
+  });
+
+  it('renders a url when the post does have a urltext', () => {
+    // Arrange
+    const component = <Post {...postTitleOnly} />;
+
+    // Act
+    render(component);
+    console.log(container.innerHTML);
+
+    // Assert
+    const urltSelector = `${postTitleOnly.id}-urltext`;
+    const urltElement = container.querySelector(`a[id=${urltSelector}]`);
+    expect(urltElement).not.toBeNull();
+    expect(urltElement?.getAttribute('href')).toMatch(postTitleOnly.urltext);
   });
 });
