@@ -14,11 +14,11 @@ interface PostProps {
 const Post: FC<PostProps> = ({
   author, // author
   id, // id
-  image, // url_overridden_by_dest
+  image = '', // url_overridden_by_dest
   over18, // over_18
-  selftext, // selftext
+  selftext = '', // selftext
   title, // title
-  urltext // url_overridden_by_dest
+  urltext = '' // url_overridden_by_dest
 }: PostProps): JSX.Element => {
   return (
     <div id={id}>

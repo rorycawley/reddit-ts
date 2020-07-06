@@ -81,7 +81,7 @@ describe('Post', () => {
     expect(stElement).toBeNull();
   });
 
-  it('renders a url when the post does have a urltext', () => {
+  it('renders a url link when the post does have a urltext', () => {
     // Arrange
     const component = <Post {...postTitleOnly} />;
 
@@ -94,5 +94,19 @@ describe('Post', () => {
     const urltElement = container.querySelector(`a[id=${urltSelector}]`);
     expect(urltElement).not.toBeNull();
     expect(urltElement?.getAttribute('href')).toMatch(postTitleOnly.urltext);
+  });
+
+  it('does not render a url link when the post does not have a urltext', () => {
+    // Arrange
+    const component = <Post {...postTitleImage} />;
+
+    // Act
+    render(component);
+    console.log(container.innerHTML);
+
+    // Assert
+    const urltSelector = `${postTitleImage.id}-urltext`;
+    const urltElement = container.querySelector(`a[id=${urltSelector}]`);
+    expect(urltElement).toBeNull();
   });
 });
