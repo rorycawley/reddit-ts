@@ -1,3 +1,5 @@
+/* eslint-disable import/order */
+/* eslint-disable @typescript-eslint/no-var-requires */
 module.exports = {
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   coveragePathIgnorePatterns: [
@@ -8,6 +10,9 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jest-environment-jsdom-sixteen',
   setupFilesAfterEnv: ['<rootDir>/tests/utils/setupTests.ts'],
-  moduleDirectories: ['node_modules', __dirname],
-  testPathIgnorePatterns: ['/node_modules/']
+  moduleNameMapper: {
+    'src/(.*)': '<rootDir>/src/$1',
+    'components/(.*)': '<rootDir>/src/components/$1',
+    'tests/(.*)': '<rootDir>/tests/$1'
+  }
 };

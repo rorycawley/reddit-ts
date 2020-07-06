@@ -12,6 +12,7 @@
     "lint:code": "eslint --ext ts,tsx src",
     "prebuild": "yarn clean && yarn install",
     "prestart": "yarn install",
+    "pretest": "yarn install",
     "start": "parcel --port=3000 src/index.html --out-dir dist/debug --cache-dir dist/cache",
     "test": "jest",
     "test:coverage": "jest --coverage",
