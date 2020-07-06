@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
@@ -12,15 +12,14 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
-      "~/*": ["./src/*"],
-      "~components/*": ["./src/components/*"],
-      "~tests/*": ["./tests/*"]
+      "~/*": ["./*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "es5"
   },
+  "exclude": ["test/**/*"],
   "include": ["src/**/*"],
-  "exclude": ["dist", "tests/**/*"]
+  "typeRoots": ["node_modules/@types"]
 }
