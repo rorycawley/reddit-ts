@@ -3,7 +3,8 @@
 import {
   postBeforeAfter1,
   postBeforeAfter2,
-  postBeforeAfter3
+  postBeforeAfter3,
+  postBeforeAfter4
 } from 'tests/data';
 
 import { PostProps } from 'components/Root/Post';
@@ -26,19 +27,57 @@ const processPost = (post: PostData): PostProps => {
   processedPost = { ...processedPost, author: post.author };
   processedPost = { ...processedPost, title: post.title };
   processedPost = { ...processedPost, over18: post.over_18 };
-  processedPost = { ...processedPost, selftext: removeCRLF(post.selftext) };
 
-  if (post.thumbnail) {
-    processedPost = { ...processedPost, image: post.thumbnail };
+  if (post.selftext) {
+    processedPost = { ...processedPost, selftext: removeCRLF(post.selftext) };
   }
 
-  if (post.url_overridden_by_dest) {
+  if (
+    post.thumbnail &&
+    post.url_overridden_by_dest &&
+    post.thumbnail !== 'self' &&
+    !post.no_follow
+  ) {
+    // if (post.url_overridden_by_dest) {
+    processedPost = {
+      ...processedPost,
+      image: post.url_overridden_by_dest
+    };
+    // } else {
+    // processedPost = { ...processedPost, image: post.thumbnail };
+    // }
+  }
+
+  if (
+    post.thumbnail &&
+    post.url_overridden_by_dest &&
+    post.thumbnail !== 'self' &&
+    post.no_follow
+  ) {
+    processedPost = {
+      ...processedPost,
+      image: post.url_overridden_by_dest
+    };
+
     processedPost = {
       ...processedPost,
       urltext: post.url_overridden_by_dest
     };
   }
+
   return processedPost;
+};
+
+const checkPost = (processedPostData: PostProps, comparator: PostProps) => {
+  expect(processedPostData.id).toBe(comparator.id);
+  expect(processedPostData.author).toBe(comparator.author);
+  expect(processedPostData.title).toBe(comparator.title);
+  expect(processedPostData.over18).toBe(comparator.over18);
+  expect(processedPostData.selftext).toBe(removeCRLF(comparator.selftext));
+  expect(processedPostData.urltext).toBe(comparator.urltext);
+  expect(processedPostData.image).toBe(comparator.image);
+
+  return true;
 };
 
 describe('postProcess', () => {
@@ -47,13 +86,31 @@ describe('postProcess', () => {
 
     const testAfter = processPost(before);
 
-    expect(testAfter.id).toBe(after.id);
-    expect(testAfter.author).toBe(after.author);
-    expect(testAfter.title).toBe(after.title);
-    expect(testAfter.over18).toBe(after.over18);
-    expect(testAfter.selftext).toBe(removeCRLF(after.selftext));
-    expect(testAfter.urltext).toBe(after.urltext);
-    expect(testAfter.image).toBe(after.image);
+    expect(checkPost(testAfter, after)).toBeTruthy();
+  });
+
+  it('processes a post that shows an image only, no selftext', () => {
+    const { before, after } = postBeforeAfter2;
+
+    const testAfter = processPost(before);
+
+    expect(checkPost(testAfter, after)).toBeTruthy();
+  });
+
+  it('processes a post that shows a thumbnail image and a url', () => {
+    const { before, after } = postBeforeAfter3;
+
+    const testAfter = processPost(before);
+
+    expect(checkPost(testAfter, after)).toBeTruthy();
+  });
+
+  it('processes a post that shows a full image and a url', () => {
+    const { before, after } = postBeforeAfter4;
+
+    const testAfter = processPost(before);
+
+    expect(checkPost(testAfter, after)).toBeTruthy();
   });
 
   // it('processes a post that has a x screen only', () => {

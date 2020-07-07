@@ -127,7 +127,7 @@ export interface PostData {
   num_crossposts: number;
   media: Media | null;
   is_video: boolean;
-  link_flair_template_id: string;
+  link_flair_template_id?: string;
 }
 
 export enum FlairType {
