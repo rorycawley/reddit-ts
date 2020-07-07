@@ -82,7 +82,7 @@ export interface PostData {
   likes: null;
   suggested_sort: null;
   banned_at_utc: null;
-  url_overridden_by_dest: string;
+  url_overridden_by_dest?: string;
   view_count: null;
   archived: boolean;
   no_follow: boolean;

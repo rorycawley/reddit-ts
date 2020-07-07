@@ -25,7 +25,19 @@ const processPost = (post: PostData): PostProps => {
   processedPost = { ...processedPost, id: post.id };
   processedPost = { ...processedPost, author: post.author };
   processedPost = { ...processedPost, title: post.title };
+  processedPost = { ...processedPost, over18: post.over_18 };
   processedPost = { ...processedPost, selftext: removeCRLF(post.selftext) };
+
+  if (post.thumbnail) {
+    processedPost = { ...processedPost, image: post.thumbnail };
+  }
+
+  if (post.url_overridden_by_dest) {
+    processedPost = {
+      ...processedPost,
+      urltext: post.url_overridden_by_dest
+    };
+  }
   return processedPost;
 };
 
@@ -38,7 +50,10 @@ describe('postProcess', () => {
     expect(testAfter.id).toBe(after.id);
     expect(testAfter.author).toBe(after.author);
     expect(testAfter.title).toBe(after.title);
+    expect(testAfter.over18).toBe(after.over18);
     expect(testAfter.selftext).toBe(removeCRLF(after.selftext));
+    expect(testAfter.urltext).toBe(after.urltext);
+    expect(testAfter.image).toBe(after.image);
   });
 
   // it('processes a post that has a x screen only', () => {

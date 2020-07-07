@@ -35,7 +35,6 @@ interface BeforeAfter {
 export const postBeforeAfter1: BeforeAfter = {
   before: {
     post_hint: 'video',
-    url_overridden_by_dest: 'https://google.com/',
     preview: null,
     approved_at_utc: null,
     subreddit: 'keto',
@@ -164,7 +163,6 @@ export const postBeforeAfter1: BeforeAfter = {
 export const postBeforeAfter2: BeforeAfter = {
   before: {
     post_hint: 'video',
-    url_overridden_by_dest: 'https://google.com/',
     preview: null,
     link_flair_template_id: '',
     approved_at_utc: null,
