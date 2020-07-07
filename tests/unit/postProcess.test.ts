@@ -112,20 +112,4 @@ describe('postProcess', () => {
 
     expect(checkPost(testAfter, after)).toBeTruthy();
   });
-
-  // it('processes a post that has a x screen only', () => {
-  //   const [before, after] = postBeforeAfter2;
-
-  //   expect(before.id).toBe(after.id);
-  //   expect(before.author).toBe(after.author);
-  //   expect(before.title).toBe(after.title);
-  // });
-
-  // it('processes a post that has a y screen only', () => {
-  //   const [before, after] = postBeforeAfter3;
-
-  //   expect(before.id).toBe(after.id);
-  //   expect(before.author).toBe(after.author);
-  //   expect(before.title).toBe(after.title);
-  // });
 });
