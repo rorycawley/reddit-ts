@@ -23,6 +23,12 @@ describe('Post', () => {
   //   // eslint-disable-next-line react/no-render-return-value
   //   ReactDOM.render(component, container);
 
+  const isElementInDocument = (testId: string): boolean =>
+    screen.queryByTestId(testId) !== null;
+
+  const getElementByTestId = (testId: string): HTMLElement =>
+    screen.getByTestId(testId);
+
   beforeEach(() => {
     // container = document.createElement('div');
   });
@@ -32,21 +38,12 @@ describe('Post', () => {
     const component = <Post {...postTitleOnly} />;
 
     // Act
-    //    documentBody = render(component);
     render(component);
     // screen.debug();
 
     // Assert
-    // expect(screen.getByTestId('postlist')).toBeInTheDocument();
-    // expect(screen.getByTestId('postlist')).toMatch(postTitleOnly.title);
     expect(screen.getByText(postTitleOnly.title)).toBeInTheDocument();
   });
-
-  const isElementInDocument = (testId: string): boolean =>
-    screen.queryByTestId(testId) !== null;
-
-  const getElementByTestId = (testId: string): HTMLElement =>
-    screen.getByTestId(testId);
 
   it('renders the post img', () => {
     // Arrange
@@ -57,9 +54,6 @@ describe('Post', () => {
     // screen.debug();
 
     // Assert
-    // getElementByTestId(`card-post-image-${postTitleImage.id}`);
-    // const imgSelector = `card-post-image-${postTitleImage.id}`;
-    // expect(screen.getByTestId(imgSelector)).toBeInTheDocument();
     expect(
       getElementByTestId(`card-post-image-${postTitleImage.id}`).getAttribute(
         'style'
@@ -88,13 +82,11 @@ describe('Post', () => {
     // Act
     render(component);
     // screen.debug();
-    // card-post-selftext-postTitleOnly
 
     // Assert
-    const stElementId = `card-post-selftext-${postTitleOnly.id}`;
-    const selfTextElement = screen.getByTestId(stElementId);
-    expect(selfTextElement).toBeInTheDocument();
-    expect(selfTextElement.textContent).toBe(postTitleOnly.selftext);
+    expect(
+      getElementByTestId(`card-post-selftext-${postTitleOnly.id}`).textContent
+    ).toBe(postTitleOnly.selftext);
   });
 
   it("does not render a selftext when the post doesn't have a selftext", () => {
@@ -107,8 +99,9 @@ describe('Post', () => {
     // card-post-selftext-postTitleOnly
 
     // Assert
-    const stElementId = `card-post-selftext-${postTitleImage.id}`;
-    expect(screen.queryByTestId(stElementId)).toBeNull();
+    expect(
+      isElementInDocument(`card-post-selftext-${postTitleImage.id}`)
+    ).toBeFalsy();
   });
 
   it('renders a url link when the post does have a urltext', () => {
@@ -119,10 +112,10 @@ describe('Post', () => {
     render(component);
     // screen.debug();
 
-    // console.log(container.innerHTML);
-    const urlTextElement = screen.getByText(postTitleOnly.urltext);
-    expect(urlTextElement).toBeInTheDocument();
-    expect(urlTextElement.getAttribute('href')).toMatch(postTitleOnly.urltext);
+    // Assert
+    expect(
+      screen.getByText(postTitleOnly.urltext).getAttribute('href')
+    ).toMatch(postTitleOnly.urltext);
   });
 
   it('does not render a url link when the post does not have a urltext', () => {
@@ -133,8 +126,9 @@ describe('Post', () => {
     render(component);
     // screen.debug();
 
-    // console.log(container.innerHTML);
-    const utElementId = `card-post-urltext-${postTitleImage.id}`;
-    expect(screen.queryByTestId(utElementId)).toBeNull();
+    // Assert
+    expect(
+      isElementInDocument(`card-post-urltext-${postTitleImage.id}`)
+    ).toBeFalsy();
   });
 });
