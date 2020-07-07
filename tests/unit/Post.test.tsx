@@ -5,7 +5,8 @@ import {
   screen,
   fireEvent,
   waitFor,
-  getByRole
+  getByRole,
+  getByTestId
 } from '@testing-library/react';
 
 // import ReactDOM from 'react-dom';
@@ -41,6 +42,12 @@ describe('Post', () => {
     expect(screen.getByText(postTitleOnly.title)).toBeInTheDocument();
   });
 
+  const isElementInDocument = (testId: string): boolean =>
+    screen.queryByTestId(testId) !== null;
+
+  const getElementByTestId = (testId: string): HTMLElement =>
+    screen.getByTestId(testId);
+
   it('renders the post img', () => {
     // Arrange
     const component = <Post {...postTitleImage} />;
@@ -50,11 +57,14 @@ describe('Post', () => {
     // screen.debug();
 
     // Assert
-    const imgSelector = `card-post-image-${postTitleImage.id}`;
-    expect(screen.getByTestId(imgSelector)).toBeInTheDocument();
-    expect(screen.getByTestId(imgSelector).getAttribute('style')).toMatch(
-      postTitleImage.image
-    );
+    // getElementByTestId(`card-post-image-${postTitleImage.id}`);
+    // const imgSelector = `card-post-image-${postTitleImage.id}`;
+    // expect(screen.getByTestId(imgSelector)).toBeInTheDocument();
+    expect(
+      getElementByTestId(`card-post-image-${postTitleImage.id}`).getAttribute(
+        'style'
+      )
+    ).toMatch(postTitleImage.image);
   });
 
   it("does not render an image when the post doesn't have an image", () => {
@@ -66,8 +76,9 @@ describe('Post', () => {
     // screen.debug();
 
     // Assert
-    const imgSelector = `card-post-image-${postTitleOnly.id}`;
-    expect(screen.queryByTestId(imgSelector)).toBeNull();
+    expect(
+      isElementInDocument(`card-post-image-${postTitleOnly.id}`)
+    ).toBeFalsy();
   });
 
   it('renders a selftext when the post does have a selftext', () => {
