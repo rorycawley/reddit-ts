@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme: Theme) =>
 //   })
 // );
 
-interface PostProps {
+export interface PostProps {
   author: string;
   id: string;
   image?: string;

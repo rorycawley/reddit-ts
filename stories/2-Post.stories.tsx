@@ -25,6 +25,22 @@ export const Selftext: FC = () => (
   />
 );
 
-// Default.story = {
-//   name: 'default'
-// };
+export const Image: FC = () => (
+  <Post
+    id='1234'
+    title='hello post Image'
+    author='rory'
+    over18={false}
+    image='https://preview.redd.it/yyvst6zqc5951.jpg?width=640&height=853&crop=smart&auto=webp&s=6c761da7af6402d2be28dcfb5b73d1fcd397f17c'
+  />
+);
+
+export const Url: FC = () => (
+  <Post
+    id='1234'
+    title='hello post Image'
+    author='rory'
+    over18={false}
+    urltext='https://www.bbc.co.uk/news/uk-england-berkshire-53254282'
+  />
+);
