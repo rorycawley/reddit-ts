@@ -47,7 +47,7 @@ describe('PostList', () => {
     // screen.debug();
 
     // Assert
-    expect(screen.getByTestId('postlist')).toBeInTheDocument();
+    expect(isElementInDocument('postlist')).toBeTruthy();
   });
 
   it("renders the postlist when it's loading", () => {
