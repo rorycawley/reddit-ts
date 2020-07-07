@@ -1,6 +1,6 @@
 // export { postTitleOnly, postTitleImage };
 // export postTitleOnly;
-import { PostProps } from 'components/Root/Post';
+import { PostProps } from 'src/components/Root/PostList/Post';
 
 import { PostData } from 'src/services/reddit/reddit';
 

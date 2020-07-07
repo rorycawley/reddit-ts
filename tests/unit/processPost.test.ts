@@ -8,7 +8,7 @@ import {
   postBeforeAfter4
 } from 'tests/data';
 
-import { PostProps } from 'components/Root/Post';
+import { PostProps } from 'src/components/Root/PostList/Post';
 import { removeCRLF, processPost } from 'src/services/reddit/processPosts';
 
 const checkPost = (processedPostData: PostProps, comparator: PostProps) => {

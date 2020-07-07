@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import Post, { PostProps } from '../src/components/Root/Post';
+import Post, { PostProps } from '../src/components/Root/PostList/Post';
 
 export default { title: 'Post', component: Post };
 

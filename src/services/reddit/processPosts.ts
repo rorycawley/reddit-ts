@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable camelcase */
 import formatDistance from 'date-fns/formatDistance';
-import { PostProps } from 'src/components/Root/Post';
+import { PostProps } from 'src/components/Root/PostList/Post';
 import { PostData } from './reddit';
 
 export const getCreated = (created_utc: number) =>

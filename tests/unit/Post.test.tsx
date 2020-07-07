@@ -10,7 +10,7 @@ import {
 } from '@testing-library/react';
 
 // import ReactDOM from 'react-dom';
-import Post from 'components/Root/Post';
+import Post from 'src/components/Root/PostList/Post';
 
 import { postTitleImage, postTitleOnly } from 'tests/data';
 
