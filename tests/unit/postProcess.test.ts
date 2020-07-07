@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // import { PostProps } from './../../src/components/Root/Post/Post';
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
@@ -10,12 +11,19 @@ import {
 import { PostProps } from 'components/Root/Post';
 
 import { PostData } from 'tests/data/postInterfaces';
+import formatDistance from 'date-fns/formatDistance';
+
+const getCreated = (created_utc: number) =>
+  formatDistance(created_utc * 1000, Date.now(), {
+    addSuffix: true
+  });
 
 const defaultPostProps: PostProps = {
   author: '',
   id: '',
   over18: false,
-  title: ''
+  title: '',
+  created: ''
 };
 
 const removeCRLF = (s?: string) => (s ? s.replace(/(\r\n|\n|\r)/gm, ' ') : s);
@@ -27,6 +35,7 @@ const processPost = (post: PostData): PostProps => {
   processedPost = { ...processedPost, author: post.author };
   processedPost = { ...processedPost, title: post.title };
   processedPost = { ...processedPost, over18: post.over_18 };
+  processedPost = { ...processedPost, created: getCreated(post.created_utc) };
 
   if (post.selftext) {
     processedPost = { ...processedPost, selftext: removeCRLF(post.selftext) };
@@ -38,14 +47,10 @@ const processPost = (post: PostData): PostProps => {
     post.thumbnail !== 'self' &&
     !post.no_follow
   ) {
-    // if (post.url_overridden_by_dest) {
     processedPost = {
       ...processedPost,
       image: post.url_overridden_by_dest
     };
-    // } else {
-    // processedPost = { ...processedPost, image: post.thumbnail };
-    // }
   }
 
   if (
@@ -56,7 +61,7 @@ const processPost = (post: PostData): PostProps => {
   ) {
     processedPost = {
       ...processedPost,
-      image: post.url_overridden_by_dest
+      image: post.thumbnail
     };
 
     processedPost = {
@@ -76,6 +81,7 @@ const checkPost = (processedPostData: PostProps, comparator: PostProps) => {
   expect(processedPostData.selftext).toBe(removeCRLF(comparator.selftext));
   expect(processedPostData.urltext).toBe(comparator.urltext);
   expect(processedPostData.image).toBe(comparator.image);
+  expect(processedPostData.created).toMatch(/ago/);
 
   return true;
 };

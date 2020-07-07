@@ -12,7 +12,8 @@ export const postTitleOnly = {
   selftext:
     "Hi everyone,\n\nMyself and my housemate are looking to play tennis at Prospect Park, but I can't it on any booking system or find any number that is picking up. Does anyone know if the courts there are currently open?",
   over18: false,
-  urltext: 'https://www.bbc.co.uk/news/uk-england-berkshire-53254282'
+  urltext: 'https://www.bbc.co.uk/news/uk-england-berkshire-53254282',
+  created: 'sdf'
 };
 
 export const postTitleImage = {
@@ -24,7 +25,8 @@ export const postTitleImage = {
   image:
     'https://preview.redd.it/yyvst6zqc5951.jpg?width=640&height=853&crop=smart&auto=webp&s=6c761da7af6402d2be28dcfb5b73d1fcd397f17c',
   over18: false,
-  selftext: ''
+  selftext: '',
+  created: 'sdf'
 };
 
 interface BeforeAfter {
@@ -156,7 +158,8 @@ export const postBeforeAfter1: BeforeAfter = {
     title: 'Thinking of food makes me sick.',
     over18: false,
     selftext:
-      "Hey guys!\n\n6th day on keto and 3rd on OMAD here.\n\nSo, yeah it's in the title. \n\nWhenever I think of food I feel sick, nauseated and about to vomit.This only happens when I think of food (especially healthy food full of green leaves.)\n\nMy suggested caloric intake is 1200 and I only eat up to 500-700. I'm not trying to starve myself but I just get full, and if I think about forcing myself to eat more I get nauseated. \n\nOtherwise I just feel okay, kind of weaker then what I am used to, but I am able to perform my daily tasks.\n\nIs this normal? And would it last forever?"
+      "Hey guys!\n\n6th day on keto and 3rd on OMAD here.\n\nSo, yeah it's in the title. \n\nWhenever I think of food I feel sick, nauseated and about to vomit.This only happens when I think of food (especially healthy food full of green leaves.)\n\nMy suggested caloric intake is 1200 and I only eat up to 500-700. I'm not trying to starve myself but I just get full, and if I think about forcing myself to eat more I get nauseated. \n\nOtherwise I just feel okay, kind of weaker then what I am used to, but I am able to perform my daily tasks.\n\nIs this normal? And would it last forever?",
+    created: 'sdf'
   }
 };
 
@@ -329,7 +332,8 @@ export const postBeforeAfter2: BeforeAfter = {
     author: 'Gnarly_Sarley',
     title: "I'm glad I had a sign to tell me how to stand.",
     over18: false,
-    image: 'https://i.redd.it/g7y75277vf951.jpg'
+    image: 'https://i.redd.it/g7y75277vf951.jpg',
+    created: 'sdf'
   }
 };
 
@@ -501,8 +505,10 @@ export const postBeforeAfter3: BeforeAfter = {
     title: 'Low in iron',
     author: 'Necessarycontroversy',
     over18: false,
-    image: 'https://imgur.com/6w6414C',
-    urltext: 'https://imgur.com/6w6414C'
+    image:
+      'https://a.thumbs.redditmedia.com/P0NU6ZAgn9bU5eAlbRzN0UnPYDfSgiVVfKc3kNl0T50.jpg',
+    urltext: 'https://imgur.com/6w6414C',
+    created: 'sdf'
   }
 };
 
@@ -724,7 +730,9 @@ export const postBeforeAfter4: BeforeAfter = {
     title: "Mosting likely to a club in my 30's.",
     author: 'River_Equation',
     over18: false,
-    image: 'https://i.imgur.com/k3jzzWy.gifv?TwYqa=PseQo',
-    urltext: 'https://i.imgur.com/k3jzzWy.gifv?TwYqa=PseQo'
+    image:
+      'https://a.thumbs.redditmedia.com/6YKmvKP2gNBkDqFUbpVNFrYxkq2UbF5BmOShjYxsOs0.jpg',
+    urltext: 'https://i.imgur.com/k3jzzWy.gifv?TwYqa=PseQo',
+    created: 'sdf'
   }
 };
