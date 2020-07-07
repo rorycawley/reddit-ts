@@ -175,7 +175,7 @@ const Post: FC<PostProps> = ({
             variant='body2'
             color='textSecondary'
             component='p'>
-            {selftext.replace(/(\r\n|\n|\r)/gm, ' ')}
+            {selftext}
           </Typography>
         </CardContent>
       )}

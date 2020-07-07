@@ -18,7 +18,10 @@ export const Selftext: FC = () => (
     title='hello post Selftext'
     author='rory'
     over18={false}
-    selftext="Hi everyone,\n\nMyself and my housemate are looking to play tennis at Prospect Park, but I can't it on any booking system or find any number that is picking up. Does anyone know if the courts there are currently open?"
+    selftext={"Hi everyone,\n\nMyself and my housemate are looking to play tennis at Prospect Park, but I can't it on any booking system or find any number that is picking up. Does anyone know if the courts there are currently open?".replace(
+      /(\r\n|\n|\r)/gm,
+      ' '
+    )}
   />
 );
 

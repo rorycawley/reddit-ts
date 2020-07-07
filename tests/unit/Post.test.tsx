@@ -77,16 +77,21 @@ describe('Post', () => {
 
   it('renders a selftext when the post does have a selftext', () => {
     // Arrange
+    // TODO ensure the data processing is doing this
+    postTitleOnly.selftext = postTitleOnly.selftext.replace(
+      /(\r\n|\n|\r)/gm,
+      ' '
+    );
     const component = <Post {...postTitleOnly} />;
 
     // Act
     render(component);
-    screen.debug();
+    // screen.debug();
 
     // Assert
     expect(
       getElementByTestId(`card-post-selftext-${postTitleOnly.id}`).textContent
-    ).toBe(postTitleOnly.selftext.replace(/(\r\n|\n|\r)/gm, ' '));
+    ).toBe(postTitleOnly.selftext);
   });
 
   it("does not render a selftext when the post doesn't have a selftext", () => {
