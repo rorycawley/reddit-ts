@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   render,
-  RenderResult,
-  screen,
-  fireEvent,
-  waitFor,
-  getByRole,
-  getByTestId
+  // RenderResult,
+  screen
+  // fireEvent,
+  // waitFor,
+  // getByRole,
+  // getByTestId
 } from '@testing-library/react';
 
 // import ReactDOM from 'react-dom';
@@ -81,12 +81,12 @@ describe('Post', () => {
 
     // Act
     render(component);
-    // screen.debug();
+    screen.debug();
 
     // Assert
     expect(
       getElementByTestId(`card-post-selftext-${postTitleOnly.id}`).textContent
-    ).toBe(postTitleOnly.selftext);
+    ).toBe(postTitleOnly.selftext.replace(/(\r\n|\n|\r)/gm, ' '));
   });
 
   it("does not render a selftext when the post doesn't have a selftext", () => {
