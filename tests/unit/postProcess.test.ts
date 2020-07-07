@@ -10,7 +10,7 @@ import {
 
 import { PostProps } from 'components/Root/Post';
 
-import { PostData } from 'tests/data/postInterfaces';
+import { PostData } from 'src/services/reddit/reddit';
 import formatDistance from 'date-fns/formatDistance';
 
 const getCreated = (created_utc: number) =>

@@ -2,7 +2,7 @@
 // export postTitleOnly;
 import { PostProps } from 'components/Root/Post';
 
-import { PostData } from 'tests/data/postInterfaces';
+import { PostData } from 'src/services/reddit/reddit';
 
 export const postTitleOnly = {
   id: 'postTitleOnly',
