@@ -62,10 +62,12 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.10.0",
+    "components": "^0.1.0",
     "date-fns": "^2.14.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.0.2",
+    "src": "^1.1.2",
     "styled-components": "^5.1.1",
     "whatwg-fetch": "^3.1.0"
   }
