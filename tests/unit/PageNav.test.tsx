@@ -17,7 +17,9 @@ describe('PageNav', () => {
       <PageNav
         backDisabled={false}
         nextDisabled={false}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         clickBack={() => {}}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         clickNext={() => {}}
       />
     );
@@ -30,7 +32,9 @@ describe('PageNav', () => {
       <PageNav
         backDisabled={false}
         nextDisabled={false}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         clickBack={() => {}}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         clickNext={() => {}}
       />
     );
@@ -65,7 +69,9 @@ describe('PageNav', () => {
       <PageNav
         backDisabled={false}
         nextDisabled={true}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         clickBack={() => {}}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         clickNext={() => {}}
       />
     );
@@ -86,6 +92,7 @@ describe('PageNav', () => {
       <PageNav
         backDisabled={false}
         nextDisabled={false}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         clickBack={() => {}}
         clickNext={onClick}
       />
