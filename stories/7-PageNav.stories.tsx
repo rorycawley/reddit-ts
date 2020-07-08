@@ -8,9 +8,9 @@ export default {
   component: PageNav
 };
 
-export const Default: FC = () => (
-         <PageNav
-           header="There's nothing to show right now."
-           subheader='Please select a subreddit.'
-         />
-       );
+export const Default: FC = () => <PageNav />;
+export const BackEnabled: FC = () => <PageNav backDisabled={false} />;
+export const NextEnabled: FC = () => <PageNav nextDisabled={false} />;
+export const BackNextEnabled: FC = () => (
+  <PageNav backDisabled={false} nextDisabled={false} />
+);
