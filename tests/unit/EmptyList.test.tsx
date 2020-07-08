@@ -30,9 +30,7 @@ describe('Post', () => {
   // const getElementByTestId = (testId: string): HTMLElement =>
   //   screen.getByTestId(testId);
 
-  beforeEach(() => {
-    // container = document.createElement('div');
-  });
+
 
   it('renders the empty list', () => {
     // Arrange
