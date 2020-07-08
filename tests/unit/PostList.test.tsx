@@ -74,7 +74,12 @@ describe('PostList', () => {
     // screen.debug();
 
     // Assert
-    expect(getElementByTestId(`postlist`).textContent).toBe('Empty');
+    expect(getElementByTestId(`postlist`).textContent).toMatch(
+      "There's nothing to show right now."
+    );
+    expect(getElementByTestId(`postlist`).textContent).toMatch(
+      'Please select a subreddit.'
+    );
   });
 
   it("renders the postlist when it's got several posts", () => {
