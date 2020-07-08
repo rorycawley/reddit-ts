@@ -1,4 +1,13 @@
 import React, { FC } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+const useStyles = makeStyles(() => ({
+  heading: {
+    paddingLeft: '0px',
+    paddingTop: '20px'
+  }
+}));
 
 const defaultErrorMessage = 'An error has occurred.';
 
@@ -9,7 +18,9 @@ interface ErrorMessageProps {
 const ErrorFound: FC<ErrorMessageProps> = ({
   error = defaultErrorMessage
 }: ErrorMessageProps) => {
-  return <div>{error}</div>;
+  const classes = useStyles();
+
+  return <Typography className={classes.heading}>{error}</Typography>;
 };
 
 export default ErrorFound;
