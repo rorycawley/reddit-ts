@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import Post, { PostProps } from './Post/Post';
+import Loading from './Loading';
 
 export interface PostListProps {
   loading?: boolean;
@@ -10,19 +11,17 @@ const PostList: FC<PostListProps> = ({
   loading = false,
   posts = []
 }: PostListProps) => {
-  if (loading) {
-    return <div data-testid='postlist'>Loading</div>;
-  }
-
-  if (posts?.length === 0) {
-    return <div data-testid='postlist'>Empty</div>;
-  }
+  // if (loading) {
+  //   return <div data-testid='postlist'>Loading</div>;
+  // }
 
   return (
     <div data-testid='postlist'>
-      {posts.map(post => (
-        <Post key={post.id} {...post} />
-      ))}
+      {posts?.length ? (
+        posts.map(post => <Post key={post.id} {...post} />)
+      ) : (
+        loading ? <Loading /> : <div>Empty</div>
+      )}
     </div>
   );
 };

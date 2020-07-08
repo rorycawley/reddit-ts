@@ -58,8 +58,11 @@ describe('PostList', () => {
     render(component);
     // screen.debug();
 
-    // Assert
-    expect(getElementByTestId(`postlist`).textContent).toBe('Loading');
+    expect(
+      document.getElementsByClassName(
+        'MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse'
+      )
+    ).not.toBeNull();
   });
 
   it("renders the postlist when it's got no posts", () => {
@@ -80,7 +83,7 @@ describe('PostList', () => {
 
     // Act
     render(component);
-    screen.debug();
+    // screen.debug();
 
     // Assert
     expect(getElementByTestId(`postlist`).childElementCount).toEqual(4);

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 // import Post, { PostProps } from '../src/components/Root/PostList/Post';
-import PostList, { PostListProps } from '../src/components/Root/PostList';
+import PostList from '../src/components/Root/PostList';
 import { postListWithFourPosts } from '../tests/data/postLists';
 
 export default {

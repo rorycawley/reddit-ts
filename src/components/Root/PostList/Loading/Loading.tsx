@@ -1,0 +1,29 @@
+import React, { memo } from 'react';
+
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import Skeleton from '@material-ui/lab/Skeleton';
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      width: '100%'
+    }
+  })
+);
+
+const Loading = memo(function Loading() {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <Skeleton />
+      <Skeleton animation='wave' />
+      <Skeleton />
+      <Skeleton animation='wave' />
+      <Skeleton />
+      <Skeleton animation='wave' />
+    </div>
+  );
+});
+
+export default Loading;
