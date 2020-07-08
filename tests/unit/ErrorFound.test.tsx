@@ -3,7 +3,7 @@ import React from 'react';
 import ErrorFound from '../../src/components/Root/ErrorFound';
 import { render, screen } from '@testing-library/react';
 
-describe('<ErrorFound />', () => {
+describe('ErrorFound', () => {
   it('renders without a provided error parameter', () => {
     // Arrange
     const component = <ErrorFound data-testid='errorfound' />;

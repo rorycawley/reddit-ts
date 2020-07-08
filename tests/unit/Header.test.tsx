@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import Header from '../../src/components/Root/Header';
 
-describe('<Header />', () => {
+describe('Header', () => {
   it('renders the component', () => {
     // Arrange
     const component = <Header />;

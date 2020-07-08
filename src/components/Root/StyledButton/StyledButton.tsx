@@ -2,6 +2,10 @@ import styled from 'styled-components';
 
 import MatButton from '@material-ui/core/Button';
 
+interface StyledButtonProps {
+  onClick?: () => void;
+}
+
 const StyledButton = styled(MatButton)`
   background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
   border-radius: 3px;

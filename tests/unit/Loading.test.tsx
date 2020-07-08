@@ -5,7 +5,7 @@ import Loading from 'src/components/Root/PostList/Loading';
 
 let documentBody: RenderResult;
 
-describe('<Loading />', () => {
+describe('Loading', () => {
   it('renders the component', () => {
     documentBody = render(<Loading />);
 

@@ -1,16 +1,11 @@
 import React from 'react';
 import {
   render,
-  // RenderResult,
   screen
-  // fireEvent,
-  // waitFor,
-  // getByRole,
-  // getByTestId
 } from '@testing-library/react';
 import PostListTitle from 'src/components/Root/PostList/PostListTitle';
 
-describe('Post', () => {
+describe('PostListTitle', () => {
   it('renders a title with default subreddit all', () => {
     // Arrange
     const component = <PostListTitle />;
