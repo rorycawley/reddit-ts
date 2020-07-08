@@ -13,89 +13,51 @@ let documentBody: RenderResult;
 
 describe('PageNav', () => {
   it('renders the component', () => {
-    documentBody = render(
-      <PageNav
-        backDisabled={false}
-        nextDisabled={false}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickBack={() => {}}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickNext={() => {}}
-      />
-    );
+    render(<PageNav />);
 
     expect(screen.getByTestId('pagenav')).toBeInTheDocument();
   });
 
+  it('renders the component with back and next buttons disabled by default', () => {
+    render(<PageNav />);
+
+    expect(screen.getByLabelText('next')).toBeDisabled();
+    expect(screen.getByLabelText('back')).toBeDisabled();
+  });
+
+  it('renders the component with back and next buttons enabled', () => {
+    render(<PageNav backDisabled={true} nextDisabled={true} />);
+
+    expect(screen.getByLabelText('next')).toBeDisabled();
+    expect(screen.getByLabelText('back')).toBeDisabled();
+  });
+
+  it('renders the component with back button enabled', () => {
+    render(<PageNav backDisabled={true} nextDisabled={false} />);
+
+    expect(screen.getByLabelText('back')).toBeDisabled();
+    expect(screen.getByLabelText('next')).not.toBeDisabled();
+  });
+
+  it('renders the component with next button enabled', () => {
+    render(<PageNav backDisabled={false} nextDisabled={true} />);
+
+    expect(screen.getByLabelText('back')).not.toBeDisabled();
+    expect(screen.getByLabelText('next')).toBeDisabled();
+  });
+
   it('renders the component with back and next buttons', () => {
-    documentBody = render(
-      <PageNav
-        backDisabled={false}
-        nextDisabled={false}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickBack={() => {}}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickNext={() => {}}
-      />
-    );
+    render(<PageNav backDisabled={false} nextDisabled={false} />);
 
-    expect(screen.getByLabelText('next')).toBeInTheDocument();
-    expect(screen.getByLabelText('back')).toBeInTheDocument();
-  });
-
-  it('renders the component with back button  disabled', () => {
-    documentBody = render(
-      <PageNav
-        backDisabled={true}
-        nextDisabled={false}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickBack={() => {}}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickNext={() => {}}
-      />
-    );
-
-    expect(documentBody.getByTestId('pagenav').innerHTML).toMatch(
-      'MuiIconButton-root Mui-disabled'
-    );
-
-    // expect(screen.getByLabelText('next')).toBeInTheDocument();
-    // expect(screen.getByLabelText('back')).toBeInTheDocument();
-    // screen.debug();
-  });
-
-  it('renders the component with next button  disabled', () => {
-    documentBody = render(
-      <PageNav
-        backDisabled={false}
-        nextDisabled={true}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickBack={() => {}}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickNext={() => {}}
-      />
-    );
-
-    expect(documentBody.getByTestId('pagenav').innerHTML).toMatch(
-      'MuiIconButton-root Mui-disabled'
-    );
-
-    // expect(screen.getByLabelText('next')).toBeInTheDocument();
-    // expect(screen.getByLabelText('back')).toBeInTheDocument();
-    // screen.debug();
+    expect(screen.getByLabelText('next')).not.toBeDisabled();
+    expect(screen.getByLabelText('back')).not.toBeDisabled();
   });
 
   it('clicks on the next button', () => {
     const onClick = jest.fn();
 
     documentBody = render(
-      <PageNav
-        backDisabled={false}
-        nextDisabled={false}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickBack={() => {}}
-        clickNext={onClick}
-      />
+      <PageNav backDisabled={false} nextDisabled={false} clickNext={onClick} />
     );
 
     fireEvent(
@@ -107,23 +69,13 @@ describe('PageNav', () => {
     );
 
     expect(onClick).toHaveBeenCalled();
-
-    // expect(screen.getByLabelText('next')).toBeInTheDocument();
-    // expect(screen.getByLabelText('back')).toBeInTheDocument();
-    // screen.debug();
   });
 
   it('clicks on the back button', () => {
     const onClick = jest.fn();
 
     documentBody = render(
-      <PageNav
-        backDisabled={false}
-        nextDisabled={false}
-        clickBack={onClick}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        clickNext={() => {}}
-      />
+      <PageNav backDisabled={false} nextDisabled={false} clickBack={onClick} />
     );
 
     fireEvent(
@@ -135,9 +87,5 @@ describe('PageNav', () => {
     );
 
     expect(onClick).toHaveBeenCalled();
-
-    // expect(screen.getByLabelText('next')).toBeInTheDocument();
-    // expect(screen.getByLabelText('back')).toBeInTheDocument();
-    // screen.debug();
   });
 });

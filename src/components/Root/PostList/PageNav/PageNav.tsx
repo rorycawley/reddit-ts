@@ -4,17 +4,19 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 interface PageNavProps {
-  backDisabled: boolean;
-  nextDisabled: boolean;
-  clickBack: () => void;
-  clickNext: () => void;
+  backDisabled?: boolean;
+  nextDisabled?: boolean;
+  clickBack?: () => void;
+  clickNext?: () => void;
 }
 
 const PageNav: FC<PageNavProps> = ({
-  backDisabled,
-  nextDisabled,
-  clickBack,
-  clickNext
+  backDisabled = true,
+  nextDisabled = true,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  clickBack = () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  clickNext = () => {}
 }: PageNavProps) => {
   return (
     <Grid
