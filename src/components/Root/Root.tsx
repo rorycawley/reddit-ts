@@ -1,7 +1,13 @@
 import React, { FC } from 'react';
+import { SubredditProvider } from './useSubreddit';
+import EnthusasticGreeting from './EnthusasticGreeting';
 
 const Root: FC = () => {
-  return <div>Root</div>;
+  return (
+    <SubredditProvider>
+      <EnthusasticGreeting />
+    </SubredditProvider>
+  );
 };
 
 export default Root;
