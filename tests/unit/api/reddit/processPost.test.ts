@@ -9,7 +9,7 @@ import {
 } from 'tests/data';
 
 import { PostProps } from 'src/components/Root/PostList/Post';
-import { removeCRLF, processPost } from 'src/services/reddit/processPosts';
+import { removeCRLF, processPost } from 'src/api/reddit/processPosts';
 
 const checkPost = (processedPostData: PostProps, comparator: PostProps) => {
   expect(processedPostData.id).toBe(comparator.id);

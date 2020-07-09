@@ -4,7 +4,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 
-import SignIn from '../../src/components/SignIn';
+import SignIn from '../../../src/components/SignIn';
 
 describe('SignIn', () => {
   it('renders the component', () => {

@@ -5,7 +5,7 @@ import {
   fireEvent,
   RenderResult
 } from '@testing-library/react';
-import StyledButton from '../../src/components/Root/StyledButton/index';
+import StyledButton from '../../../src/components/Root/StyledButton/index';
 
 describe('StyledButton', () => {
   let documentBody: RenderResult;

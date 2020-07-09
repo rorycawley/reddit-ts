@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ErrorFound from '../../src/components/Root/ErrorFound';
+import ErrorFound from '../../../src/components/Root/ErrorFound';
 import { render, screen } from '@testing-library/react';
 
 describe('ErrorFound', () => {
