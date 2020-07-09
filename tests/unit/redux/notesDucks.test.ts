@@ -56,13 +56,60 @@ describe('notesDucks', () => {
       });
     });
 
-    it.todo('should handle ADD_NOTE');
+    it('should handle ADD_NOTE', () => {
+      expect(
+        notesDucks.notesReducer(
+          { notes: ['note 1'] },
+          {
+            type: notesDucks.ADD_NOTE,
+            payload: 'Run the tests'
+          }
+        )
+      ).toEqual({
+        notes: ['note 1', 'Run the tests']
+      });
+    });
 
-    it.todo('should handle SET_NOTES');
+    it('should handle SET_NOTES', () => {
+      expect(
+        notesDucks.notesReducer(
+          { notes: ['note 1'] },
+          {
+            type: notesDucks.SET_NOTES,
+            payload: ['one', 'two', 'three']
+          }
+        )
+      ).toEqual({
+        notes: ['one', 'two', 'three']
+      });
+    });
 
-    it.todo('should handle SAVE_NOTES');
+    it('should handle SAVE_NOTES', () => {
+      expect(
+        notesDucks.notesReducer(
+          { notes: ['note 1'] },
+          {
+            type: notesDucks.SAVE_NOTES,
+            payload: ['one', 'two', 'three']
+          }
+        )
+      ).toEqual({
+        notes: ['note 1']
+      });
+    });
 
-    it.todo('should handle LOAD_NOTES');
+    it('should handle LOAD_NOTES', () => {
+      expect(
+        notesDucks.notesReducer(
+          { notes: ['note 1', 'note 2'] },
+          {
+            type: notesDucks.LOAD_NOTES
+          }
+        )
+      ).toEqual({
+        notes: ['note 1', 'note 2']
+      });
+    });
   });
 });
 
