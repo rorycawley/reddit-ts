@@ -1,17 +1,19 @@
 import React, { FC } from 'react';
-import { Avatar, Button } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-// import Box from "@material-ui/core/Box";
+import Button from '@material-ui/core/Button';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+
 import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers';
+
+import * as yup from 'yup';
+import { Typography, Grid, Link } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -33,27 +35,55 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignIn: FC = () => {
+interface SignInProps {
+  onSubmit?: (data: IFormInputs) => void;
+}
+
+interface IFormInputs {
+  email: string;
+  password: string;
+  remember: boolean;
+}
+
+const signInSchema = yup.object().shape({
+  email: yup.string().email('Enter a valid email').required('Required'),
+  password: yup
+    .string()
+    .min(6, 'Password should be longer than 6 characters')
+    .required('Required')
+});
+// const schema = yup.object().shape({
+//   firstName: yup.string().required(),
+//   age: yup.number().positive().integer().required()
+// });
+
+const SignIn: FC<SignInProps> = ({
+  onSubmit = (data: IFormInputs) => console.info(JSON.stringify(data))
+}: SignInProps) => {
   const classes = useStyles();
+
   // eslint-disable-next-line @typescript-eslint/unbound-method
   const {
     formState: { isSubmitting },
     register,
     handleSubmit,
+    errors,
     control
-  } = useForm();
-
-  const onSubmit = handleSubmit(({ email, password, remember }) => {
-    // alert(JSON.stringify(email));
-    console.log(
-      'email: ',
-      email,
-      ' Password: ',
-      password,
-      ' Remember: ',
-      remember
-    );
+  } = useForm<IFormInputs>({
+    mode: 'onBlur',
+    resolver: yupResolver(signInSchema)
   });
+  // const onSubmit = handleSubmit(({ email, password, remember }) => {
+  //   // alert(JSON.stringify(email));
+  //   console.log(
+  //     'email: ',
+  //     email,
+  //     ' Password: ',
+  //     password,
+  //     ' Remember: ',
+  //     remember
+  //   );
+  // });
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -65,8 +95,13 @@ const SignIn: FC = () => {
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <form className={classes.form} noValidate onSubmit={onSubmit}>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}>
           <TextField
+            error={!!errors.email}
+            helperText={errors.email && errors.email.message}
             data-testid='form-input-email'
             disabled={isSubmitting}
             inputRef={register}
@@ -81,6 +116,8 @@ const SignIn: FC = () => {
             autoFocus
           />
           <TextField
+            error={!!errors.password}
+            helperText={errors.password && errors.password.message}
             data-testid='form-input-password'
             disabled={isSubmitting}
             inputRef={register}
@@ -110,6 +147,7 @@ const SignIn: FC = () => {
             label='Remember me'
           />
           <Button
+            data-testid='button'
             disabled={isSubmitting}
             type='submit'
             fullWidth
