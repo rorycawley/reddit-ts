@@ -1,3 +1,5 @@
+import { IPost } from 'src/entities';
+
 import React, { FC } from 'react';
 
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
@@ -9,6 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import Link from '@material-ui/core/Link';
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,16 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface PostProps {
-  author: string;
-  id: string;
-  image?: string;
-  over18: boolean;
-  selftext?: string;
-  title: string;
-  urltext?: string;
-  created: string;
-}
+export type PostProps = IPost;
 
 const Post: FC<PostProps> = ({
   author, // author

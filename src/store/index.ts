@@ -1,21 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import counterReducer, { CounterState, initialCounterState } from './counter';
+import { logger } from './middleware';
 
-// import { combineReducers, Dispatch, Reducer, Action, AnyAction } from 'redux';
+// export type RootState = {counterReducer} CounterState;
+export interface RootState {
+  counterReducer: CounterState;
+}
 
-// import {
-//   combineReducers,
-//   createStore,
-//   applyMiddleware,
-//   createSagaMiddleware
-// } from 'redux';
-// import createSagaMiddleware from 'redux-saga';
-// import * as ducks from './notes';
-// import { rootSaga } from './notes/sagas';
+const REDUX_DEV_TOOLS = '__REDUX_DEVTOOLS_EXTENSION__';
 
-// const sagaMiddleware = createSagaMiddleware();
-// const reducers = combineReducers(ducks);
+export const rootReducer = combineReducers({ counterReducer });
 
-// const store = createStore(
-//   reducers,
-//   applyMiddleware(sagaMiddleware),
-//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// );
+const initialState = { counterReducer: initialCounterState };
+const enhancers = [];
+const middleware = [logger];
+
+if (process.env.NODE_ENV === 'development') {
+  console.log(process.env.NODE_ENV);
+  const devToolsExtension =
+    ((window as any)[REDUX_DEV_TOOLS] && (window as any)[REDUX_DEV_TOOLS]()) ||
+    compose;
+  if (typeof devToolsExtension === 'function') {
+    enhancers.push(devToolsExtension);
+  }
+}
+
+const composedEnhancers = compose(applyMiddleware(...middleware), ...enhancers);
+
+export default createStore(rootReducer, initialState, composedEnhancers);

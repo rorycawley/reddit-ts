@@ -11,14 +11,17 @@ export const postListLoading: PostListProps = {
 };
 
 export const postListEmptyList: PostListProps = {
-  posts: []
+  posts: { posts: [] }
 };
 
 export const postListWithFourPosts: PostListProps = {
-  posts: [
-    postBeforeAfter1.after,
-    postBeforeAfter2.after,
-    postBeforeAfter3.after,
-    postBeforeAfter4.after
-  ]
+  loading: false,
+  posts: {
+    posts: [
+      postBeforeAfter1.after,
+      postBeforeAfter2.after,
+      postBeforeAfter3.after,
+      postBeforeAfter4.after
+    ]
+  }
 };

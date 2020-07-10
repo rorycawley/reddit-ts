@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { action } from '@storybook/addon-actions';
 
-// import Post, { PostProps } from '../src/components/Root/PostList/Post';
 import PageNav from '../src/components/Root/PostList/PageNav';
 
 export default {

@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 
-// import Post, { PostProps } from '../src/components/Root/PostList/Post';
 import EmptyList from '../src/components/Root/PostList/EmptyList';
 
 export default {

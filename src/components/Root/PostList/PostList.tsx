@@ -1,8 +1,11 @@
+import { IPostList } from 'src/entities';
+
 import React, { FC } from 'react';
-import Post, { PostProps } from './Post/Post';
+
 import Loading from './Loading';
 import EmptyList from './EmptyList';
 import { Grid, makeStyles } from '@material-ui/core';
+import Post from './Post';
 
 const xs = 12;
 const sm = 6;
@@ -30,12 +33,12 @@ const useStyles = makeStyles(() => ({
 
 export interface PostListProps {
   loading?: boolean;
-  posts?: PostProps[];
+  posts?: IPostList;
 }
 
 const PostList: FC<PostListProps> = ({
   loading = false,
-  posts = []
+  posts = { posts: [] }
 }: PostListProps) => {
   const classes = useStyles();
 
@@ -47,7 +50,7 @@ const PostList: FC<PostListProps> = ({
     );
   }
 
-  if (posts?.length === 0) {
+  if (posts?.posts?.length === 0) {
     return (
       <div data-testid='postlist'>
         <EmptyList
@@ -60,7 +63,7 @@ const PostList: FC<PostListProps> = ({
 
   return (
     <Grid container spacing={2} className={classes.post} data-testid='postlist'>
-      {posts.map(post => (
+      {posts.posts.map(post => (
         <Grid key={post.id} item xs={xs} sm={sm} md={md} lg={lg} xl={xl}>
           <Post {...post} />
         </Grid>

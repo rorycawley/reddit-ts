@@ -1,3 +1,5 @@
+import { Subreddit } from 'src/entities';
+
 import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +12,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export interface PostListTitleProps {
-  subreddit?: string;
+  subreddit?: Subreddit;
 }
 
 const PostListTitle: FC<PostListTitleProps> = ({
