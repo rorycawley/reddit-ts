@@ -3,7 +3,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
-import counterReducer, { CounterState, initialCounterState } from './counter';
+import counterReducer, {
+  CounterState,
+  initialCounterState,
+  increment,
+  decrement
+} from './counter';
 import { logger } from './middleware';
 
 // export type RootState = {counterReducer} CounterState;
@@ -20,7 +25,7 @@ const enhancers = [];
 const middleware = [logger];
 
 if (process.env.NODE_ENV === 'development') {
-  console.log(process.env.NODE_ENV);
+  // console.info(process.env.NODE_ENV);
   const devToolsExtension =
     ((window as any)[REDUX_DEV_TOOLS] && (window as any)[REDUX_DEV_TOOLS]()) ||
     compose;
@@ -31,4 +36,29 @@ if (process.env.NODE_ENV === 'development') {
 
 const composedEnhancers = compose(applyMiddleware(...middleware), ...enhancers);
 
-export default createStore(rootReducer, initialState, composedEnhancers);
+const store = createStore(rootReducer, initialState, composedEnhancers);
+
+if (process.env.NODE_ENV === 'development') {
+  // allow me to play with redux through the console
+  const W: any = window; // (window: any) = W;
+
+  W.store = store;
+  W.increment = increment;
+  W.decrement = decrement;
+
+  //   // http://patorjk.com/software/taag/#p=display&h=3&f=ANSI%20Shadow&t=REDUX
+  console.info('██████╗█████████████╗██╗   ████╗  ██╗');
+  console.info('██╔══████╔════██╔══████║   ██╚██╗██╔╝');
+  console.info('██████╔█████╗ ██║  ████║   ██║╚███╔╝ ');
+  console.info('██╔══████╔══╝ ██║  ████║   ██║██╔██╗ ');
+  console.info('██║  ███████████████╔╚██████╔██╔╝ ██╗');
+  console.info('╚═╝  ╚═╚══════╚═════╝ ╚═════╝╚═╝  ╚═╝');
+
+  //                                                                        '                                   ¯`'´¯                   '`~-·'´            `*^··^*'´     ');
+
+  console.info('Use redux directly: ');
+  console.info('  store.dispatch(increment())');
+  console.info('  store.dispatch(decrement())');
+}
+
+export default store;

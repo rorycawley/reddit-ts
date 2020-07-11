@@ -7,11 +7,12 @@ const logger: Middleware = (api: MiddlewareAPI) => (
   next: Dispatch<AnyAction>
 ) => (action: AnyAction) => {
   console.group(action.type);
+
+  console.log('state before dispatch', JSON.stringify(api.getState()));
   console.info('dispatching', action);
-
   const result = next(action);
-
-  console.log('state after dispatch', api.getState());
+  console.log('state after dispatch', JSON.stringify(api.getState()));
+  
   console.groupEnd();
 
   return result;
