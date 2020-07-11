@@ -20,7 +20,7 @@ const REDUX_DEV_TOOLS = '__REDUX_DEVTOOLS_EXTENSION__';
 
 export const rootReducer = combineReducers({ counterReducer });
 
-const initialState = { counterReducer: initialCounterState };
+export const initialRootState = { counterReducer: initialCounterState };
 const enhancers = [];
 const middleware = [logger];
 
@@ -34,9 +34,13 @@ if (process.env.NODE_ENV === 'development') {
   }
 }
 
-const composedEnhancers = compose(applyMiddleware(...middleware), ...enhancers);
+export const composedEnhancers = compose(
+  applyMiddleware(...middleware),
+  ...enhancers
+);
 
-const store = createStore(rootReducer, initialState, composedEnhancers);
+// const store = createStore(rootReducer, initialRootState, composedEnhancers);
+const store = createStore(rootReducer, composedEnhancers);
 
 if (process.env.NODE_ENV === 'development') {
   // allow me to play with redux through the console
@@ -46,16 +50,15 @@ if (process.env.NODE_ENV === 'development') {
   W.increment = increment;
   W.decrement = decrement;
 
-  //   // http://patorjk.com/software/taag/#p=display&h=3&f=ANSI%20Shadow&t=REDUX
-  console.info('██████╗█████████████╗██╗   ████╗  ██╗');
-  console.info('██╔══████╔════██╔══████║   ██╚██╗██╔╝');
-  console.info('██████╔█████╗ ██║  ████║   ██║╚███╔╝ ');
-  console.info('██╔══████╔══╝ ██║  ████║   ██║██╔██╗ ');
-  console.info('██║  ███████████████╔╚██████╔██╔╝ ██╗');
-  console.info('╚═╝  ╚═╚══════╚═════╝ ╚═════╝╚═╝  ╚═╝');
+  // http://patorjk.com/software/taag/#p=display&f=ANSI Shadow&t=REDUX
 
-  //                                                                        '                                   ¯`'´¯                   '`~-·'´            `*^··^*'´     ');
-
+  console.info('██████╗ ███████╗██████╗ ██╗   ██╗██╗  ██╗');
+  console.info('██╔══██╗██╔════╝██╔══██╗██║   ██║╚██╗██╔╝');
+  console.info('██████╔╝█████╗  ██║  ██║██║   ██║ ╚███╔╝ ');
+  console.info('██╔══██╗██╔══╝  ██║  ██║██║   ██║ ██╔██╗ ');
+  console.info('██║  ██║███████╗██████╔╝╚██████╔╝██╔╝ ██╗');
+  console.info('╚═╝  ╚═╝╚══════╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝');
+  console.info('                                         ');
   console.info('Use redux directly: ');
   console.info('  store.dispatch(increment())');
   console.info('  store.dispatch(decrement())');

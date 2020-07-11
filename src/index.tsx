@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import Root from './components/Root';
 import store from './store';
 
+
 render(
   <Provider store={store}>
     <Root />
