@@ -5,15 +5,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
-import counterReducer, { increment, decrement } from './counter';
+import counterReducer, { increment, decrement, CounterState } from './counter';
 import { logger } from './middleware';
 import { loadState, saveState } from './common/localStorage';
 import throttle from 'lodash/throttle';
 
-// export type RootState = {counterReducer} CounterState;
-// export interface RootState {
-//   counterReducer: CounterState;
-// }
+export interface RootState {
+  counterReducer: CounterState;
+}
 export const rootReducer = combineReducers({ counterReducer });
 
 const enhancers = [];
