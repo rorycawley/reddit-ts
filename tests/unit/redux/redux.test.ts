@@ -24,7 +24,7 @@ describe('redux', () => {
     let store: Store;
     beforeEach(() => {
       // create a brand new store
-      store = createStore(rootReducer, composedEnhancers);
+      store = store = createStore(rootReducer, composedEnhancers);
     });
 
     it('should give the intial state', () => {
@@ -67,6 +67,7 @@ describe('redux', () => {
     });
 
     it('should give the correct state with several increments', () => {
+      // console.log(JSON.stringify(store.getState()));
       store.dispatch(increment()); // 1
       store.dispatch(increment()); // 2
       store.dispatch(increment()); // 3

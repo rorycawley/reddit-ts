@@ -3,9 +3,9 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
 import Root from './components/Root';
-import store from './store';
+import configureStore from './store';
 
-
+const store = configureStore();
 render(
   <Provider store={store}>
     <Root />
