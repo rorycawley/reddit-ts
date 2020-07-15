@@ -1,3 +1,5 @@
+/* eslint-disable handle-callback-err */
+/* eslint-disable jest/no-disabled-tests */
 /* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-unused-vars */
@@ -7,6 +9,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import 'whatwg-fetch';
 import { storeSpy, expectRedux } from 'expect-redux';
+import { all, put, call } from 'redux-saga/effects';
+
 import {
   StoreEnhancer,
   Store,
@@ -17,48 +21,18 @@ import {
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { StoreWithSpy } from 'expect-redux/dist/storeSpy';
-import { all, fork, takeEvery, put, call } from 'redux-saga/effects';
 import { server, rest } from 'tests/utils/setupMSW';
-
-const GET_SUBREDDITS_REQUEST = 'QUERY_SUBREDDITS';
-const GET_SUBREDDITS_SUCCESS = 'QUERY_SUBREDDITS_SUCCESS';
-const GET_SUBREDDITS_FAILURE = 'QUERY_SUBREDDITS_FAILURE'; // action to get subreddits
-
-// action to get subreddits
-const getSubreddits = (subreddit: string) => ({
-  type: GET_SUBREDDITS_REQUEST,
-  payload: { subreddit }
-});
-
-// action to give subreddits response
-const getSubredditsSuccess = (subreddits: any[]) => {
-  console.log(
-    JSON.stringify({
-      type: GET_SUBREDDITS_SUCCESS,
-      payload: { subreddits }
-    })
-  );
-  return {
-    type: GET_SUBREDDITS_SUCCESS,
-    payload: { subreddits }
-  };
-};
-
-const getSubredditsFailure = (error: any) => ({
-  type: GET_SUBREDDITS_FAILURE,
-  payload: { error }
-});
-
-const subredditsReducer = (state = initialStateSubreddits, action: any) => {
-  switch (action.type) {
-    case GET_SUBREDDITS_SUCCESS:
-      return { ...state, subreddits: action.payload.subreddits, error: '' };
-    case GET_SUBREDDITS_FAILURE:
-      return { ...state, error: action.payload.error };
-    default:
-      return state;
-  }
-};
+import {
+  QUERY_SUBREDDITS_REQUEST,
+  QUERY_SUBREDDITS_SUCCESS,
+  QUERY_SUBREDDITS_FAILURE,
+  querySubreddits,
+  querySubredditsSuccess,
+  querySubredditsFailure,
+  subredditsReducer,
+  subredditsSagas
+} from 'src/store/subreddits';
+import { querySubredditsURL } from 'src/api/reddit';
 
 const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
   const sagaMiddleware = createSagaMiddleware();
@@ -73,47 +47,9 @@ const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
   return store;
 };
 
-function* getSubredditsWorker({
-  type,
-  payload
-}: {
-  type: string;
-  payload: any;
-}) {
-  // yield put({ type: 'GETTING_SUBREDDITS' });
-  try {
-    // const result = yield call(getSubredditsAPI, action.payload.subreddit);
-
-    const result = yield call(apiGET, getSubredditsURL(payload.subreddit));
-
-    const json = yield call([result, 'json']);
-    // console.log(JSON.stringify(json.subreddits, null, "  "));
-    // console.log(JSON.stringify(getSubredditsSuccess(json)));
-    yield put(getSubredditsSuccess(json.subreddits));
-  } catch (error) {
-    yield put(getSubredditsFailure(error));
-  }
-}
-
-function* watchSubredditsRequest() {
-  yield takeEvery(GET_SUBREDDITS_REQUEST, getSubredditsWorker);
-}
-
-const subredditsSagas = [fork(watchSubredditsRequest)];
-
 function* rootSaga() {
   yield all([...subredditsSagas]);
 }
-
-// TODO redo this
-const getSubredditsURL = (subreddit: string): string =>
-  `https://www.reddit.com/api/subreddit_autocomplete.json?query=${subreddit}&include_over_18=0&include_profiles=0`;
-
-// TODO redo
-const apiGET = (url: string): Promise<Response> => window.fetch(url);
-
-// reducers
-const initialStateSubreddits = { subreddits: [], error: '' };
 
 describe('get subredits', () => {
   let store: Store;
@@ -190,51 +126,89 @@ describe('get subredits', () => {
   });
 
   const dispatchRequest = (subreddit: string) =>
-    store.dispatch(getSubreddits(subreddit));
+    store.dispatch(querySubreddits(subreddit));
 
-  it('test a response from network', async () => {
-    const url = getSubredditsURL('reactjs');
+  // it.skip('test a response from network', async () => {
+  //   const url = querySubredditsURL('reactjs');
 
-    const result = await apiGET(url);
-    // expect(result.ok).toBeTruthy();
-    const json = await result.json();
+  //   const result = await apiGET(url);
+  //   // expect(result.ok).toBeTruthy();
+  //   const json = await result.json();
 
-    console.log('real response: ');
-    console.log(JSON.stringify(json, null, '  '));
-  });
+  //   // console.log('real response: ');
+  //   // console.log(JSON.stringify(json, null, '  '));
+  // });
 
-  it('test a response', async () => {
-    const testResponse = reactjsSubreddits;
-    const url = getSubredditsURL('reactjs');
+  // it.skip('test MSW a successful response', async () => {
+  //   const testResponse = reactjsSubreddits;
+  //   const url = querySubredditsURL('reactjs');
+  //   server.use(
+  //     rest.get(url, (req, res, context) => {
+  //       return res(context.status(200), context.json(testResponse));
+  //     })
+  //   );
+
+  //   const result = await apiGET(url);
+  //   expect(result.ok).toBeTruthy();
+  //   const json = await result.json();
+
+  //   // console.log(JSON.stringify(json, null, '  '));
+  // });
+
+  // it.skip('test MSW a failed response', async () => {
+  //   const testResponse = reactjsSubreddits;
+  //   const url = querySubredditsURL('reactjs');
+  //   server.use(
+  //     rest.get(url, (req, res, context) => {
+  //       console.log('MSW got response');
+  //       return res(context.status(500), context.json({ error: 'error' }));
+  //     })
+  //   );
+
+  //   const result = await apiGET(url);
+  //   console.log(JSON.stringify(result, null, '  '));
+
+  //   expect(result.ok).toBeFalsy();
+
+  //   const json = await result.json();
+
+  //   console.log(JSON.stringify(json, null, '  '));
+  // });
+
+  it('does a subreddit query request and fails', () => {
+    const url = querySubredditsURL('reactjs');
     server.use(
       rest.get(url, (req, res, context) => {
-        return res(context.status(200), context.json(testResponse));
+        console.log('MSW sent response');
+        return res(context.status(500), context.json({ error: 'error' }));
       })
     );
-
-    const result = await apiGET(url);
-    expect(result.ok).toBeTruthy();
-    const json = await result.json();
-
-    console.log(JSON.stringify(json, null, '  '));
-  });
-
-  it('does a subreddit query request and succeeds', () => {
-    const testResponse = reactjsSubreddits;
-    const url = getSubredditsURL('reactjs');
-    server.use(
-      rest.get(url, (req, res, context) => {
-        console.log('MSW got response');
-        return res(context.status(200), context.json(testResponse));
-      })
-    );
-
-    // store.dispatch(getSubreddits('reactjs'));
     dispatchRequest('reactjs');
     return expectRedux(store as StoreWithSpy<any, any>)
       .toDispatchAnAction()
       .matching({
-        type: GET_SUBREDDITS_SUCCESS,
+        type: QUERY_SUBREDDITS_FAILURE,
+        error: 'Failed to obtain subreddits query response'
+      });
+  });
+
+  // {"type":"[Subreddits] QUERY_SUBREDDITS_FAILURE","payload":{"error":{}}}
+  it('does a subreddit query request and succeeds', () => {
+    const testResponse = reactjsSubreddits;
+    const url = querySubredditsURL('reactjs');
+    server.use(
+      rest.get(url, (req, res, context) => {
+        // console.log('MSW sent response');
+        return res(context.status(200), context.json(testResponse));
+      })
+    );
+
+    // store.dispatch(querySubreddits('reactjs'));
+    dispatchRequest('reactjs');
+    return expectRedux(store as StoreWithSpy<any, any>)
+      .toDispatchAnAction()
+      .matching({
+        type: QUERY_SUBREDDITS_SUCCESS,
         payload: {
           subreddits: [
             {

@@ -5,7 +5,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
-import counterReducer, { increment, decrement, CounterState } from './counter';
+// import counterReducer, { increment, decrement, CounterState } from './counter';
+import { subredditReducer } from './subreddits';
+
 import { logger } from './middleware';
 import { loadState, saveState } from './common/localStorage';
 import throttle from 'lodash/throttle';

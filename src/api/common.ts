@@ -9,8 +9,11 @@ import 'whatwg-fetch';
 // const data = await getData(
 //   "https://jsonplaceholder.typicode.com/todos"
 // );
-export async function apiGET(request: RequestInfo): Promise<any> {
-  const response = await fetch(request);
-  const body = await response.json();
-  return body;
-}
+// export async function apiGET(request: RequestInfo): Promise<any> {
+//   const response = await fetch(request);
+//   const body = await response.json();
+//   return body;
+// }
+
+// TODO redo
+export const apiGET = (url: string): Promise<Response> => window.fetch(url);
