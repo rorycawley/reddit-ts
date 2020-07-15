@@ -37,6 +37,7 @@
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.9",
+    "@types/react-router-dom": "^5.1.5",
     "@types/redux": "^3.6.0",
     "@types/redux-saga": "^0.10.5",
     "@types/styled-components": "^5.1.1",
@@ -57,6 +58,7 @@
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.5",
     "eslint-plugin-standard": "^4.0.1",
+    "expect-redux": "^5.0.3",
     "jest": "^26.1.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "msw": "^0.19.5",
@@ -64,7 +66,6 @@
     "prettier": "^2.0.5",
     "react-test-renderer": "^16.9.0",
     "ts-jest": "^26.1.1",
-    "@types/react-router-dom": "^5.1.5",
     "typescript": "^3.9.6"
   },
   "dependencies": {
