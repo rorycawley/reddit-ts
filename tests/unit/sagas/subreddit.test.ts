@@ -279,8 +279,7 @@ describe('get subredits', () => {
 
   it('returns a default state for an undefined existing state', () => {
     expect(subredditsReducer(undefined, {})).toEqual({
-      subreddits: [],
-      error: ''
+      subreddits: []
     });
   });
 });

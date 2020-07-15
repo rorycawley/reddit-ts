@@ -70,15 +70,19 @@ export interface SubredditsState {
   error?: string;
 }
 
-const initialStateSubreddits = { subreddits: [], error: '' };
+const initialSubredditsState: SubredditsState = { subreddits: [] };
 
 export const subredditsReducer = (
-  state = initialStateSubreddits,
+  state = initialSubredditsState,
   action: any
-) => {
+): SubredditsState => {
   switch (action.type) {
     case QUERY_SUBREDDITS_SUCCESS:
-      return { ...state, subreddits: action.payload.subreddits, error: '' };
+      return {
+        ...state,
+        subreddits: action.payload.subreddits,
+        error: ''
+      };
     case QUERY_SUBREDDITS_FAILURE:
       return { ...state, error: action.error };
     default:
