@@ -22,7 +22,6 @@ export const QUERY_SUBREDDITS_FAILURE = `${subredditsQuery} QUERY_SUBREDDITS_FAI
 // ____ ____ ___ _ ____ _  _    ____ ____ ____ ____ ___ ____ ____ ____
 // |__| |     |  | |  | |\ |    |    |__/ |___ |__|  |  |  | |__/ [__
 // |  | |___  |  | |__| | \|    |___ |  \ |___ |  |  |  |__| |  \ ___]
-// action to get subreddits
 export interface QuerySubredditsAction {
   type: string;
   payload: { subreddit: string };
@@ -74,17 +73,17 @@ const initialSubredditsState: SubredditsState = { subreddits: [] };
 
 export const subredditsReducer = (
   state = initialSubredditsState,
-  action: any
+  action: QuerySubredditActionTypes
 ): SubredditsState => {
   switch (action.type) {
     case QUERY_SUBREDDITS_SUCCESS:
       return {
         ...state,
-        subreddits: action.payload.subreddits,
+        subreddits: (action as QuerySubredditsSuccess).payload.subreddits,
         error: ''
       };
     case QUERY_SUBREDDITS_FAILURE:
-      return { ...state, error: action.error };
+      return { ...state, error: (action as QuerySubredditsFailure).error };
     default:
       return state;
   }
