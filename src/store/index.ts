@@ -12,15 +12,16 @@ import {
   StoreEnhancer,
   Store
 } from 'redux';
-// import counterReducer, { increment, decrement, CounterState } from './counter';
+
 import {
-  subredditsReducer,
   SubredditsState,
-  subredditsSagas
+  subredditsSagas,
+  querySubreddits,
+  subredditsReducer
 } from './subreddits';
 
-import { logger } from './middleware';
-import { loadState, saveState } from './common/localStorage';
+import { loggerMiddleware } from './middleware';
+import { loadState, saveState } from 'src/store/common/localStorage';
 import throttle from 'lodash/throttle';
 import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
@@ -28,20 +29,57 @@ import createSagaMiddleware from 'redux-saga';
 export interface RootState {
   subreddits: SubredditsState;
 }
+
+// ██████╗  ██████╗  ██████╗ ████████╗    ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗███████╗██████╗
+// ██╔══██╗██╔═══██╗██╔═══██╗╚══██╔══╝    ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝██╔════╝██╔══██╗
+// ██████╔╝██║   ██║██║   ██║   ██║       ██████╔╝█████╗  ██║  ██║██║   ██║██║     █████╗  ██████╔╝
+// ██╔══██╗██║   ██║██║   ██║   ██║       ██╔══██╗██╔══╝  ██║  ██║██║   ██║██║     ██╔══╝  ██╔══██╗
+// ██║  ██║╚██████╔╝╚██████╔╝   ██║       ██║  ██║███████╗██████╔╝╚██████╔╝╚██████╗███████╗██║  ██║
+// ╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝       ╚═╝  ╚═╝╚══════╝╚═════╝  ╚═════╝  ╚═════╝╚══════╝╚═╝  ╚═╝
 const rootReducer = combineReducers({ subreddits: subredditsReducer });
+
+// ██████╗  ██████╗  ██████╗ ████████╗    ███████╗ █████╗  ██████╗  █████╗
+// ██╔══██╗██╔═══██╗██╔═══██╗╚══██╔══╝    ██╔════╝██╔══██╗██╔════╝ ██╔══██╗
+// ██████╔╝██║   ██║██║   ██║   ██║       ███████╗███████║██║  ███╗███████║
+// ██╔══██╗██║   ██║██║   ██║   ██║       ╚════██║██╔══██║██║   ██║██╔══██║
+// ██║  ██║╚██████╔╝╚██████╔╝   ██║       ███████║██║  ██║╚██████╔╝██║  ██║
+// ╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝       ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
 function* rootSaga() {
   yield all([...subredditsSagas]);
 }
 
 export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
   const sagaMiddleware = createSagaMiddleware();
+  const middlewares = [loggerMiddleware, sagaMiddleware];
 
   const store = createStore(
     rootReducer,
-    compose(...[applyMiddleware(sagaMiddleware), ...storeEnhancers])
+    compose(...[applyMiddleware(...middlewares), ...storeEnhancers])
   ) as Store;
 
   sagaMiddleware.run(rootSaga);
+
+  if (process.env.NODE_ENV === 'development') {
+    // allow me to play with redux through the console
+    const W: any = window; // (window: any) = W;
+
+    W.store = store;
+    W.querySubreddits = querySubreddits;
+
+    // http://patorjk.com/software/taag/#p=display&f=ANSI Shadow&t=REDUX
+
+    console.info('██████╗ ███████╗██████╗ ██╗   ██╗██╗  ██╗');
+    console.info('██╔══██╗██╔════╝██╔══██╗██║   ██║╚██╗██╔╝');
+    console.info('██████╔╝█████╗  ██║  ██║██║   ██║ ╚███╔╝ ');
+    console.info('██╔══██╗██╔══╝  ██║  ██║██║   ██║ ██╔██╗ ');
+    console.info('██║  ██║███████╗██████╔╝╚██████╔╝██╔╝ ██╗');
+    console.info('╚═╝  ╚═╝╚══════╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝');
+    console.info('                                         ');
+    console.info('Use redux directly: ');
+    console.info("  store.dispatch(querySubreddits('reactjs'))");
+    console.info('  store.getState()');
+  }
+
   return store;
 };
 

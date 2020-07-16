@@ -3,7 +3,7 @@ import { Dispatch, Middleware, MiddlewareAPI, AnyAction } from 'redux';
 /**
  * Logs all actions and states after they are dispatched.
  */
-const logger: Middleware = (api: MiddlewareAPI) => (
+const loggerMiddleware: Middleware = (api: MiddlewareAPI) => (
   next: Dispatch<AnyAction>
 ) => (action: AnyAction) => {
   console.group(action.type);
@@ -12,9 +12,9 @@ const logger: Middleware = (api: MiddlewareAPI) => (
   console.info('dispatching', action);
   const result = next(action);
   console.log('state after dispatch', JSON.stringify(api.getState()));
-  
+
   console.groupEnd();
 
   return result;
 };
-export default logger;
+export default loggerMiddleware;

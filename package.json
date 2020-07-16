@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "parcel build src/index.html  --no-source-maps --out-dir   dist/release --public-url ./ --cache-dir dist/cache",
-    "clean": "rm -rf dist && rm -rf node_modules",
+    "clean": "rm -rf dist && rm -rf coverage && rm -rf node_modules",
     "lint": "yarn lint:code",
     "lint:code": "eslint --ext ts,tsx src",
     "prebuild": "yarn clean && yarn install",

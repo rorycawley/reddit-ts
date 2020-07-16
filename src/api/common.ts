@@ -16,4 +16,25 @@ import 'whatwg-fetch';
 // }
 
 // TODO redo
-export const apiGET = (url: string): Promise<Response> => window.fetch(url);
+export const apiGET = ({
+  url,
+  body,
+  method,
+  feature,
+  timeout = 7000,
+}: {
+  body: any;
+  feature: string;
+  method: string;
+  timeout: number;
+  url: string;
+}): Promise<Response> => window.fetch(url, { body, method });
+
+// (url, options, timeout = 7000) {
+//     return Promise.race([
+//         fetch(url, options),
+//         new Promise((_, reject) =>
+//             setTimeout(() => reject(new Error('timeout')), timeout)
+//         )
+//     ]);
+// }

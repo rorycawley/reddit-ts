@@ -1,20 +1,18 @@
-import { fork, takeEvery, put, call, all } from 'redux-saga/effects';
-import { apiGET } from 'src/api/common';
-import { querySubredditsURL } from 'src/api/reddit';
+import { fork, takeEvery, put, call } from 'redux-saga/effects';
+import { apiGET } from '../api/common';
+import { querySubredditsURL } from '../api/reddit';
 
 // ____ ____ ___ _ ____ _  _ ____
 // |__| |     |  | |  | |\ | [__
 // |  | |___  |  | |__| | \| ___]
-const subredditsQuery = '[Subreddits]';
-export const QUERY_SUBREDDITS_REQUEST = `${subredditsQuery} QUERY_SUBREDDITS`;
-export const QUERY_SUBREDDITS_SUCCESS = `${subredditsQuery} QUERY_SUBREDDITS_SUCCESS`;
-export const QUERY_SUBREDDITS_FAILURE = `${subredditsQuery} QUERY_SUBREDDITS_FAILURE`; // action to get subreddits
+const SUBREDDITS = '[Subreddits]';
+export const QUERY_SUBREDDITS_REQUEST = `${SUBREDDITS} QUERY_SUBREDDITS`;
+export const QUERY_SUBREDDITS_SUCCESS = `${SUBREDDITS} QUERY_SUBREDDITS_SUCCESS`;
+export const QUERY_SUBREDDITS_FAILURE = `${SUBREDDITS} QUERY_SUBREDDITS_FAILURE`; // action to get subreddits
 
 // ____ ____ ___ _ ____ _  _    ____ ____ ____ ____ ___ ____ ____ ____
 // |__| |     |  | |  | |\ |    |    |__/ |___ |__|  |  |  | |__/ [__
 // |  | |___  |  | |__| | \|    |___ |  \ |___ |  |  |  |__| |  \ ___]
-export interface NoAction {}
-
 export interface QuerySubredditsAction {
   type: string;
   payload: { subreddit: string };
@@ -94,9 +92,15 @@ function* querySubredditsWorker({
   try {
     // const result = yield call(querySubredditsAPI, action.payload.subreddit);
 
-    const result = yield call(apiGET, querySubredditsURL(payload.subreddit));
+    const result = yield call(apiGET, {
+      url: querySubredditsURL(payload.subreddit),
+      body: null,
+      method: 'GET',
+      feature: SUBREDDITS,
+      timeout: 7000
+    });
     if (!result.ok) {
-      throw new Error('Error obtaining subreddit query response');
+      throw new Error(result.status);
     }
 
     const json = yield call([result, 'json']);
@@ -115,5 +119,3 @@ function* watchSubredditsRequest() {
 }
 
 export const subredditsSagas = [fork(watchSubredditsRequest)];
-
-

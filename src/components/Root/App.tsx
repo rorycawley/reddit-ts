@@ -4,23 +4,23 @@
 import React, { FC } from 'react';
 import { SubredditProvider } from './useSubreddit';
 import SearchBar from './SearchBar';
-import { increment, decrement } from '~/store/counter';
+import { querySubreddits } from '~/store/subreddits';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store';
-// import counterReducer from 'src/counter';
 
 const App: FC = () => {
   const dispatch = useDispatch();
-  const selectCounter = (state: RootState) => state.counterReducer.counter;
-  const counter = useSelector(selectCounter);
+  const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
+  const subreddits = useSelector(subredditsSelector);
 
   return (
     <SubredditProvider>
       <h1>hello</h1>
       <SearchBar />
-      <h1>{counter}</h1>
-      <button onClick={() => dispatch(increment())}>Age UP</button>
-      <button onClick={() => dispatch(decrement())}>Age Down</button>
+      <button onClick={() => dispatch(querySubreddits('reactjs'))}>
+        reactjs
+      </button>
+      <button onClick={() => dispatch(querySubreddits('keto'))}>keto</button>
     </SubredditProvider>
   );
 };

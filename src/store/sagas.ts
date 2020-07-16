@@ -6,7 +6,9 @@ import { querySubredditsURL } from 'src/api/reddit';
 
 function* querySubredditsSagaWorker(subredditQuery: string) {
   try {
-    const result = yield call(apiGET, querySubredditsURL(subredditQuery));
+    const result = yield call(apiGET, {
+      url: querySubredditsURL(subredditQuery)
+    });
     console.log(result);
   } catch (error) {
     console.error(error);
