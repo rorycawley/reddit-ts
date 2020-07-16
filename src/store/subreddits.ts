@@ -94,9 +94,9 @@ function* querySubredditsWorker({
 
     const result = yield call(apiGET, {
       url: querySubredditsURL(payload.subreddit),
-      body: null,
       method: 'GET',
       feature: SUBREDDITS,
+      body: null,
       timeout: 7000
     });
     if (!result.ok) {

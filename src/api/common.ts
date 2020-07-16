@@ -19,9 +19,9 @@ import 'whatwg-fetch';
 const DEFAULT_API_TIMEOUT = 7000;
 export const apiGET = ({
   url,
-  body,
-  method,
+  method = 'GET',
   feature,
+  body,
   timeout = DEFAULT_API_TIMEOUT
 }: {
   body: any;
