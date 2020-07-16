@@ -21,20 +21,25 @@ export const apiGET = ({
   body,
   method,
   feature,
-  timeout = 7000,
+  timeout = 7000
 }: {
   body: any;
   feature: string;
   method: string;
   timeout: number;
   url: string;
-}): Promise<Response> => window.fetch(url, { body, method });
+}): Promise<Response> =>
+  Promise.race([
+    window.fetch(url, { body, method }),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('timeout')), timeout)
+    )
+  ]) as Promise<Response>;
 
 // (url, options, timeout = 7000) {
-//     return Promise.race([
-//         fetch(url, options),
-//         new Promise((_, reject) =>
-//             setTimeout(() => reject(new Error('timeout')), timeout)
-//         )
-//     ]);
-// }
+//  Promise.race([
+//     window.fetch(url, { body, method }),
+//     new Promise((_, reject) =>
+//         setTimeout(() => reject(new Error('timeout')), timeout)
+//     )
+// ]);
