@@ -1,22 +1,27 @@
 import { fork, takeEvery, put, call } from 'redux-saga/effects';
 import { apiGET } from '../api/common';
-import { querySubredditsURL } from '../api/reddit';
+import { querySubredditsURL as fetchSubredditsURL } from '../api/reddit';
 
 // ____ ____ ___ _ ____ _  _ ____
 // |__| |     |  | |  | |\ | [__
 // |  | |___  |  | |__| | \| ___]
 const SUBREDDITS = '[Subreddits]';
-export const API_REQUEST = 'API_REQUEST';
-export const QUERY_SUBREDDITS_REQUEST = `${SUBREDDITS} QUERY_SUBREDDITS`;
+export const FETCH_SUBREDDITS = `${SUBREDDITS} FETCH_SUBREDDITS`;
+export const SET_SUBREDDITS = `${SUBREDDITS} SET_SUBREDDITS`;
 export const QUERY_SUBREDDITS_SUCCESS = `${SUBREDDITS} QUERY_SUBREDDITS_SUCCESS`;
 export const QUERY_SUBREDDITS_FAILURE = `${SUBREDDITS} QUERY_SUBREDDITS_FAILURE`; // action to get subreddits
 
 // ____ ____ ___ _ ____ _  _    ____ ____ ____ ____ ___ ____ ____ ____
 // |__| |     |  | |  | |\ |    |    |__/ |___ |__|  |  |  | |__/ [__
 // |  | |___  |  | |__| | \|    |___ |  \ |___ |  |  |  |__| |  \ ___]
-export interface QuerySubredditsAction {
+export interface FetchSubredditsAction {
   type: string;
   payload: { subreddit: string };
+}
+export interface SetSubredditsAction {
+  type: string;
+  payload: { subreddits: any[] };
+  meta: { normalizeKey: string; feature: string };
 }
 export interface QuerySubredditsSuccess {
   type: string;
@@ -26,27 +31,39 @@ export interface QuerySubredditsFailure {
   type: string;
   error: boolean;
 }
-export type QuerySubredditActionTypes =
-  | QuerySubredditsAction
+
+export type SubredditActionTypes =
+  | FetchSubredditsAction
+  | SetSubredditsAction
   | QuerySubredditsSuccess
   | QuerySubredditsFailure;
 
-export const querySubreddits = (
-  subreddit: string
-): QuerySubredditActionTypes => ({
-  type: QUERY_SUBREDDITS_REQUEST,
+export const fetchSubreddits = (subreddit: string): SubredditActionTypes => ({
+  type: FETCH_SUBREDDITS,
   payload: { subreddit }
+});
+
+export const setSubreddits = ({
+  subreddits,
+  normalizeKey = 'name'
+}: {
+  subreddits: any[];
+  normalizeKey: string;
+}): SubredditActionTypes => ({
+  type: SET_SUBREDDITS,
+  payload: { subreddits },
+  meta: { normalizeKey, feature: SUBREDDITS }
 });
 
 // action to give subreddits response
 export const querySubredditsSuccess = (
   subreddits: any[]
-): QuerySubredditActionTypes => ({
+): SubredditActionTypes => ({
   type: QUERY_SUBREDDITS_SUCCESS,
   payload: { subreddits }
 });
 
-export const querySubredditsFailure = (): QuerySubredditActionTypes => ({
+export const querySubredditsFailure = (): SubredditActionTypes => ({
   type: QUERY_SUBREDDITS_FAILURE,
   error: true
 });
@@ -63,7 +80,7 @@ const initialSubredditsState: SubredditsState = { subreddits: [] };
 
 export const subredditsReducer = (
   state = initialSubredditsState,
-  action: QuerySubredditActionTypes
+  action: SubredditActionTypes
 ): SubredditsState => {
   switch (action.type) {
     case QUERY_SUBREDDITS_SUCCESS:
@@ -82,7 +99,7 @@ export const subredditsReducer = (
 // ____ ____ ____ ____ ____
 // [__  |__| | __ |__| [__
 // ___] |  | |__] |  | ___]
-function* querySubredditsWorker({
+function* fetchSubredditsWorker({
   type,
   payload
 }: {
@@ -94,7 +111,7 @@ function* querySubredditsWorker({
     // const result = yield call(querySubredditsAPI, action.payload.subreddit);
 
     const result = yield call(apiGET, {
-      url: querySubredditsURL(payload.subreddit),
+      url: fetchSubredditsURL(payload.subreddit),
       method: 'GET',
       feature: SUBREDDITS,
       body: null,
@@ -116,27 +133,7 @@ function* querySubredditsWorker({
 }
 
 function* watchSubredditsRequest() {
-  yield takeEvery(QUERY_SUBREDDITS_REQUEST, querySubredditsWorker);
+  yield takeEvery(FETCH_SUBREDDITS, fetchSubredditsWorker);
 }
-
-function* apiWorker() {
-  console.log('API worker called');
-  console.log('API worker called');
-  console.log('API worker called');
-  console.log('API worker called');
-  console.log('API worker called');
-  console.log('API worker called');
-  console.log('API worker called');
-  console.log('API worker called');
-  console.log('API worker called');
-  const subredditsRes: any[] = ['one'];
-  yield put(querySubredditsSuccess(subredditsRes));
-}
-
-function* watchAPIRequest() {
-  yield takeEvery(API_REQUEST, apiWorker);
-}
-
-export const apiSagas = [fork(watchAPIRequest)];
 
 export const subredditsSagas = [fork(watchSubredditsRequest)];

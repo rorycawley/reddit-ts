@@ -4,7 +4,7 @@
 import React, { FC } from 'react';
 import { SubredditProvider } from './useSubreddit';
 import SearchBar from './SearchBar';
-import { querySubreddits } from '~/store/subreddits';
+import { fetchSubreddits } from '~/store/subreddits';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store';
 
@@ -17,10 +17,10 @@ const App: FC = () => {
     <SubredditProvider>
       <h1>hello</h1>
       <SearchBar />
-      <button onClick={() => dispatch(querySubreddits('reactjs'))}>
+      <button onClick={() => dispatch(fetchSubreddits('reactjs'))}>
         reactjs
       </button>
-      <button onClick={() => dispatch(querySubreddits('keto'))}>keto</button>
+      <button onClick={() => dispatch(fetchSubreddits('keto'))}>keto</button>
     </SubredditProvider>
   );
 };

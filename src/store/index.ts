@@ -16,9 +16,8 @@ import {
 import {
   SubredditsState,
   subredditsSagas,
-  querySubreddits,
-  subredditsReducer,
-  apiSagas
+  fetchSubreddits,
+  subredditsReducer
 } from './subreddits';
 
 import { loggerMiddleware } from './middleware';
@@ -46,7 +45,7 @@ const rootReducer = combineReducers({ subreddits: subredditsReducer });
 // ██║  ██║╚██████╔╝╚██████╔╝   ██║       ███████║██║  ██║╚██████╔╝██║  ██║
 // ╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝       ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
 function* rootSaga() {
-  yield all([...subredditsSagas, ...apiSagas]);
+  yield all([...subredditsSagas]);
 }
 
 export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
@@ -65,7 +64,7 @@ export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
     const W: any = window; // (window: any) = W;
 
     W.store = store;
-    W.querySubreddits = querySubreddits;
+    W.querySubreddits = fetchSubreddits;
 
     // http://patorjk.com/software/taag/#p=display&f=ANSI Shadow&t=REDUX
 
@@ -77,7 +76,7 @@ export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
     console.info('╚═╝  ╚═╝╚══════╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝');
     console.info('                                         ');
     console.info('Use redux directly: ');
-    console.info("  store.dispatch(querySubreddits('reactjs'))");
+    console.info("  store.dispatch(fetchSubreddits('reactjs'))");
     console.info('  store.getState()');
   }
 

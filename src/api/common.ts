@@ -15,7 +15,6 @@ import 'whatwg-fetch';
 //   return body;
 // }
 
-// TODO redo
 const DEFAULT_API_TIMEOUT = 7000;
 export const apiGET = ({
   url,

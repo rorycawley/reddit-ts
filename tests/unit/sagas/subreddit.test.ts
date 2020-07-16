@@ -25,10 +25,10 @@ import { server, rest } from 'tests/utils/setupMSW';
 import {
   QUERY_SUBREDDITS_SUCCESS,
   QUERY_SUBREDDITS_FAILURE,
-  querySubreddits,
+  fetchSubreddits,
   subredditsReducer,
   subredditsSagas,
-  QuerySubredditActionTypes
+  SubredditActionTypes
 } from 'src/store/subreddits';
 import { configureStore } from 'src/store';
 import { querySubredditsURL } from 'src/api/reddit';
@@ -108,7 +108,7 @@ describe('get subredits', () => {
   });
 
   const dispatchRequest = (subreddit: string) =>
-    store.dispatch(querySubreddits(subreddit));
+    store.dispatch(fetchSubreddits(subreddit));
 
   // it.skip('test a response from network', async () => {
   //   const url = querySubredditsURL('reactjs');
@@ -370,7 +370,7 @@ describe('get subredits', () => {
 
     it('returns a default state for an undefined existing state', () => {
       expect(
-        subredditsReducer(undefined, {} as QuerySubredditActionTypes)
+        subredditsReducer(undefined, {} as SubredditActionTypes)
       ).toEqual({
         subreddits: []
       });
