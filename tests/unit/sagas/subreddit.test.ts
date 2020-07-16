@@ -24,7 +24,7 @@ import { StoreWithSpy } from 'expect-redux/dist/storeSpy';
 import { server, rest } from 'tests/utils/setupMSW';
 import {
   QUERY_SUBREDDITS_SUCCESS,
-  QUERY_SUBREDDITS_FAILURE,
+  QUERY_SUBREDDITS_ERROR,
   fetchSubreddits,
   subredditsReducer,
   subredditsSagas,
@@ -225,12 +225,12 @@ describe('get subredits', () => {
       return expectRedux(store as StoreWithSpy<any, any>)
         .toDispatchAnAction()
         .matching({
-          type: QUERY_SUBREDDITS_FAILURE,
+          type: QUERY_SUBREDDITS_ERROR,
           error: true
         });
     });
 
-    // {"type":"[Subreddits] QUERY_SUBREDDITS_FAILURE","payload":{"error":{}}}
+    // {"type":"[Subreddits] QUERY_SUBREDDITS_ERROR","payload":{"error":{}}}
     it('does a subreddit query request and succeeds', () => {
       const testResponse = reactjsSubreddits;
       const url = querySubredditsURL('reactjs');

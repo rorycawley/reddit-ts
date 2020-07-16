@@ -45,7 +45,7 @@ const normalizeMiddleware = ({ dispatch }: { dispatch: Dispatch }) => (
     dispatch(dataNormalized(action.meta.feature, subreddits));
 
     // sends the data along with the new normalized data
-    console.log(setSubreddits(subreddits, null));
+    // console.log(setSubreddits(subreddits, null));
     next(setSubreddits(subreddits, null));
   } else {
     // sends it to the next middleware or to the rootReducer if there are no more middlewares

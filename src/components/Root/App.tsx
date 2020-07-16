@@ -21,6 +21,11 @@ const App: FC = () => {
         reactjs
       </button>
       <button onClick={() => dispatch(fetchSubreddits('keto'))}>keto</button>
+      <div>
+        {subreddits.map(subreddit => (
+          <div key={subreddit}>{subreddit}</div>
+        ))}
+      </div>
     </SubredditProvider>
   );
 };

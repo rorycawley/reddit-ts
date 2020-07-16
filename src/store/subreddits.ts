@@ -11,7 +11,7 @@ const SUBREDDITS = '[Subreddits]';
 export const FETCH_SUBREDDITS = `${SUBREDDITS} FETCH_SUBREDDITS`;
 export const SET_SUBREDDITS = `${SUBREDDITS} SET_SUBREDDITS`;
 export const QUERY_SUBREDDITS_SUCCESS = `${SUBREDDITS} QUERY_SUBREDDITS_SUCCESS`;
-export const QUERY_SUBREDDITS_FAILURE = `${SUBREDDITS} QUERY_SUBREDDITS_FAILURE`; // action to get subreddits
+export const QUERY_SUBREDDITS_ERROR = `${SUBREDDITS} QUERY_SUBREDDITS_ERROR`; // action to get subreddits
 
 // ____ ____ ___ _ ____ _  _    ____ ____ ____ ____ ___ ____ ____ ____
 // |__| |     |  | |  | |\ |    |    |__/ |___ |__|  |  |  | |__/ [__
@@ -29,7 +29,7 @@ export interface QuerySubredditsSuccess {
   type: string;
   payload: { subreddits: any[] };
 }
-export interface QuerySubredditsFailure {
+export interface QuerySubredditsError {
   type: string;
   error: boolean;
 }
@@ -38,7 +38,7 @@ export type SubredditActionTypes =
   | FetchSubredditsAction
   | SetSubredditsAction
   | QuerySubredditsSuccess
-  | QuerySubredditsFailure;
+  | QuerySubredditsError;
 
 export const fetchSubreddits = (subreddit: string): SubredditActionTypes => ({
   type: FETCH_SUBREDDITS,
@@ -74,8 +74,8 @@ export const querySubredditsSuccess = (
   payload: { subreddits }
 });
 
-export const querySubredditsFailure = (): SubredditActionTypes => ({
-  type: QUERY_SUBREDDITS_FAILURE,
+export const querySubredditsError = (): SubredditActionTypes => ({
+  type: QUERY_SUBREDDITS_ERROR,
   error: true
 });
 
@@ -149,7 +149,7 @@ function* fetchSubredditsWorker({
     yield put(setSubreddits(json.subreddits, 'name'));
   } catch (error) {
     // console.log(querySubredditsFailure(error));
-    yield put(querySubredditsFailure());
+    yield put(querySubredditsError());
   }
 }
 
