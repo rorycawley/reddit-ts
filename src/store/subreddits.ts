@@ -1,4 +1,4 @@
-import { fork, takeEvery, put, call } from 'redux-saga/effects';
+import { fork, takeEvery, put, call, all } from 'redux-saga/effects';
 import { apiGET } from 'src/api/common';
 import { querySubredditsURL } from 'src/api/reddit';
 
@@ -115,3 +115,5 @@ function* watchSubredditsRequest() {
 }
 
 export const subredditsSagas = [fork(watchSubredditsRequest)];
+
+

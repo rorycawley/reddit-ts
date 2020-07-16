@@ -30,24 +30,8 @@ import {
   subredditsSagas,
   QuerySubredditActionTypes
 } from 'src/store/subreddits';
+import { configureStore } from 'src/store';
 import { querySubredditsURL } from 'src/api/reddit';
-
-const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
-  const sagaMiddleware = createSagaMiddleware();
-
-  const rootReducer = combineReducers({ subreddits: subredditsReducer });
-  const store = createStore(
-    (state, _) => state,
-    compose(...[applyMiddleware(sagaMiddleware), ...storeEnhancers])
-  ) as Store;
-
-  sagaMiddleware.run(rootSaga);
-  return store;
-};
-
-function* rootSaga() {
-  yield all([...subredditsSagas]);
-}
 
 describe('get subredits', () => {
   let store: Store;
@@ -172,114 +156,224 @@ describe('get subredits', () => {
 
   //   console.log(JSON.stringify(json, null, '  '));
   // });
+  describe('subreddits reducer', () => {
+    it('change state from empty to having subreddits', async () => {
+      const testResponse = reactjsSubreddits;
+      const url = querySubredditsURL('reactjs');
+      server.use(
+        rest.get(url, (req, res, context) => {
+          // console.log('MSW sent response');
+          return res(context.status(200), context.json(testResponse));
+        })
+      );
 
-  it('does a subreddit query request and fails', () => {
-    const url = querySubredditsURL('reactjs');
-    server.use(
-      rest.get(url, (req, res, context) => {
-        console.log('MSW sent response');
-        return res(context.status(500), context.json({ error: 'error' }));
-      })
-    );
-    dispatchRequest('reactjs');
-    return expectRedux(store as StoreWithSpy<any, any>)
-      .toDispatchAnAction()
-      .matching({
-        type: QUERY_SUBREDDITS_FAILURE,
-        error: true
-      });
+      // store.dispatch(querySubreddits('reactjs'));
+      await expectRedux(store as StoreWithSpy<any, any>)
+        .toHaveState()
+        .matching({
+          subreddits: {
+            subreddits: []
+          }
+        });
+
+      dispatchRequest('reactjs');
+
+      await expectRedux(store as StoreWithSpy<any, any>)
+        .toDispatchAnAction()
+        .matching({
+          type: QUERY_SUBREDDITS_SUCCESS,
+          payload: {
+            subreddits: [
+              {
+                numSubscribers: 200191,
+                name: 'reactjs',
+                allowedPostTypes: {
+                  images: false,
+                  text: true,
+                  videos: true,
+                  links: true,
+                  spoilers: true
+                },
+                id: 't5_2zldd',
+                primaryColor: '#014980',
+                communityIcon:
+                  'https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png',
+                icon: ''
+              },
+              {
+                numSubscribers: 1154,
+                name: 'ReactJSLearn',
+                allowedPostTypes: {
+                  images: true,
+                  text: true,
+                  videos: true,
+                  links: true,
+                  spoilers: true
+                },
+                id: 't5_3iadr',
+                primaryColor: '',
+                communityIcon: '',
+                icon: ''
+              },
+              {
+                numSubscribers: 538,
+                name: 'reactjsdevelopers',
+                allowedPostTypes: {
+                  images: true,
+                  text: true,
+                  videos: true,
+                  links: true,
+                  spoilers: true
+                },
+                id: 't5_3e9j3',
+                primaryColor: '',
+                communityIcon: '',
+                icon: ''
+              },
+              {
+                numSubscribers: 1750,
+                name: 'reactjs_beginners',
+                allowedPostTypes: {
+                  images: true,
+                  text: true,
+                  videos: true,
+                  links: true,
+                  spoilers: true
+                },
+                id: 't5_3c0ga',
+                primaryColor: '',
+                communityIcon: '',
+                icon: ''
+              }
+            ]
+          }
+        });
+
+      await expectRedux(store as StoreWithSpy<any, any>)
+        .toHaveState()
+        .matching({
+          subreddits: {
+            subreddits: [
+              'reactjs',
+              'ReactJSLearn',
+              'reactjsdevelopers',
+              'reactjs_beginners'
+            ],
+            error: false
+          }
+        });
+    });
   });
 
-  // {"type":"[Subreddits] QUERY_SUBREDDITS_FAILURE","payload":{"error":{}}}
-  it('does a subreddit query request and succeeds', () => {
-    const testResponse = reactjsSubreddits;
-    const url = querySubredditsURL('reactjs');
-    server.use(
-      rest.get(url, (req, res, context) => {
-        // console.log('MSW sent response');
-        return res(context.status(200), context.json(testResponse));
-      })
-    );
+  describe('subreddit sagas', () => {
+    it('does a subreddit query request and fails', () => {
+      const url = querySubredditsURL('reactjs');
+      server.use(
+        rest.get(url, (req, res, context) => {
+          // console.log('MSW sent response');
+          return res(context.status(500), context.json({ error: 'error' }));
+        })
+      );
+      dispatchRequest('reactjs');
+      return expectRedux(store as StoreWithSpy<any, any>)
+        .toDispatchAnAction()
+        .matching({
+          type: QUERY_SUBREDDITS_FAILURE,
+          error: true
+        });
+    });
 
-    // store.dispatch(querySubreddits('reactjs'));
-    dispatchRequest('reactjs');
-    return expectRedux(store as StoreWithSpy<any, any>)
-      .toDispatchAnAction()
-      .matching({
-        type: QUERY_SUBREDDITS_SUCCESS,
-        payload: {
-          subreddits: [
-            {
-              numSubscribers: 200191,
-              name: 'reactjs',
-              allowedPostTypes: {
-                images: false,
-                text: true,
-                videos: true,
-                links: true,
-                spoilers: true
+    // {"type":"[Subreddits] QUERY_SUBREDDITS_FAILURE","payload":{"error":{}}}
+    it('does a subreddit query request and succeeds', () => {
+      const testResponse = reactjsSubreddits;
+      const url = querySubredditsURL('reactjs');
+      server.use(
+        rest.get(url, (req, res, context) => {
+          // console.log('MSW sent response');
+          return res(context.status(200), context.json(testResponse));
+        })
+      );
+
+      // store.dispatch(querySubreddits('reactjs'));
+      dispatchRequest('reactjs');
+      return expectRedux(store as StoreWithSpy<any, any>)
+        .toDispatchAnAction()
+        .matching({
+          type: QUERY_SUBREDDITS_SUCCESS,
+          payload: {
+            subreddits: [
+              {
+                numSubscribers: 200191,
+                name: 'reactjs',
+                allowedPostTypes: {
+                  images: false,
+                  text: true,
+                  videos: true,
+                  links: true,
+                  spoilers: true
+                },
+                id: 't5_2zldd',
+                primaryColor: '#014980',
+                communityIcon:
+                  'https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png',
+                icon: ''
               },
-              id: 't5_2zldd',
-              primaryColor: '#014980',
-              communityIcon:
-                'https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png',
-              icon: ''
-            },
-            {
-              numSubscribers: 1154,
-              name: 'ReactJSLearn',
-              allowedPostTypes: {
-                images: true,
-                text: true,
-                videos: true,
-                links: true,
-                spoilers: true
+              {
+                numSubscribers: 1154,
+                name: 'ReactJSLearn',
+                allowedPostTypes: {
+                  images: true,
+                  text: true,
+                  videos: true,
+                  links: true,
+                  spoilers: true
+                },
+                id: 't5_3iadr',
+                primaryColor: '',
+                communityIcon: '',
+                icon: ''
               },
-              id: 't5_3iadr',
-              primaryColor: '',
-              communityIcon: '',
-              icon: ''
-            },
-            {
-              numSubscribers: 538,
-              name: 'reactjsdevelopers',
-              allowedPostTypes: {
-                images: true,
-                text: true,
-                videos: true,
-                links: true,
-                spoilers: true
+              {
+                numSubscribers: 538,
+                name: 'reactjsdevelopers',
+                allowedPostTypes: {
+                  images: true,
+                  text: true,
+                  videos: true,
+                  links: true,
+                  spoilers: true
+                },
+                id: 't5_3e9j3',
+                primaryColor: '',
+                communityIcon: '',
+                icon: ''
               },
-              id: 't5_3e9j3',
-              primaryColor: '',
-              communityIcon: '',
-              icon: ''
-            },
-            {
-              numSubscribers: 1750,
-              name: 'reactjs_beginners',
-              allowedPostTypes: {
-                images: true,
-                text: true,
-                videos: true,
-                links: true,
-                spoilers: true
-              },
-              id: 't5_3c0ga',
-              primaryColor: '',
-              communityIcon: '',
-              icon: ''
-            }
-          ]
-        }
+              {
+                numSubscribers: 1750,
+                name: 'reactjs_beginners',
+                allowedPostTypes: {
+                  images: true,
+                  text: true,
+                  videos: true,
+                  links: true,
+                  spoilers: true
+                },
+                id: 't5_3c0ga',
+                primaryColor: '',
+                communityIcon: '',
+                icon: ''
+              }
+            ]
+          }
+        });
+    });
+
+    it('returns a default state for an undefined existing state', () => {
+      expect(
+        subredditsReducer(undefined, {} as QuerySubredditActionTypes)
+      ).toEqual({
+        subreddits: []
       });
-  });
-
-  it('returns a default state for an undefined existing state', () => {
-    expect(
-      subredditsReducer(undefined, {} as QuerySubredditActionTypes)
-    ).toEqual({
-      subreddits: []
     });
   });
 });
