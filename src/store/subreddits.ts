@@ -6,6 +6,7 @@ import { querySubredditsURL } from '../api/reddit';
 // |__| |     |  | |  | |\ | [__
 // |  | |___  |  | |__| | \| ___]
 const SUBREDDITS = '[Subreddits]';
+export const API_REQUEST = 'API_REQUEST';
 export const QUERY_SUBREDDITS_REQUEST = `${SUBREDDITS} QUERY_SUBREDDITS`;
 export const QUERY_SUBREDDITS_SUCCESS = `${SUBREDDITS} QUERY_SUBREDDITS_SUCCESS`;
 export const QUERY_SUBREDDITS_FAILURE = `${SUBREDDITS} QUERY_SUBREDDITS_FAILURE`; // action to get subreddits
@@ -117,5 +118,25 @@ function* querySubredditsWorker({
 function* watchSubredditsRequest() {
   yield takeEvery(QUERY_SUBREDDITS_REQUEST, querySubredditsWorker);
 }
+
+function* apiWorker() {
+  console.log('API worker called');
+  console.log('API worker called');
+  console.log('API worker called');
+  console.log('API worker called');
+  console.log('API worker called');
+  console.log('API worker called');
+  console.log('API worker called');
+  console.log('API worker called');
+  console.log('API worker called');
+  const subredditsRes: any[] = ['one'];
+  yield put(querySubredditsSuccess(subredditsRes));
+}
+
+function* watchAPIRequest() {
+  yield takeEvery(API_REQUEST, apiWorker);
+}
+
+export const apiSagas = [fork(watchAPIRequest)];
 
 export const subredditsSagas = [fork(watchSubredditsRequest)];

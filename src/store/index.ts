@@ -17,7 +17,8 @@ import {
   SubredditsState,
   subredditsSagas,
   querySubreddits,
-  subredditsReducer
+  subredditsReducer,
+  apiSagas
 } from './subreddits';
 
 import { loggerMiddleware } from './middleware';
@@ -45,7 +46,7 @@ const rootReducer = combineReducers({ subreddits: subredditsReducer });
 // ██║  ██║╚██████╔╝╚██████╔╝   ██║       ███████║██║  ██║╚██████╔╝██║  ██║
 // ╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝       ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
 function* rootSaga() {
-  yield all([...subredditsSagas]);
+  yield all([...subredditsSagas, ...apiSagas]);
 }
 
 export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
