@@ -23,14 +23,12 @@ import createSagaMiddleware from 'redux-saga';
 import { StoreWithSpy } from 'expect-redux/dist/storeSpy';
 import { server, rest } from 'tests/utils/setupMSW';
 import {
-  QUERY_SUBREDDITS_REQUEST,
   QUERY_SUBREDDITS_SUCCESS,
   QUERY_SUBREDDITS_FAILURE,
   querySubreddits,
-  querySubredditsSuccess,
-  querySubredditsFailure,
   subredditsReducer,
-  subredditsSagas
+  subredditsSagas,
+  QuerySubredditActionTypes
 } from 'src/store/subreddits';
 import { querySubredditsURL } from 'src/api/reddit';
 
@@ -188,7 +186,7 @@ describe('get subredits', () => {
       .toDispatchAnAction()
       .matching({
         type: QUERY_SUBREDDITS_FAILURE,
-        error: 'Failed to obtain subreddits query response'
+        error: true
       });
   });
 
@@ -278,7 +276,9 @@ describe('get subredits', () => {
   });
 
   it('returns a default state for an undefined existing state', () => {
-    expect(subredditsReducer(undefined, {})).toEqual({
+    expect(
+      subredditsReducer(undefined, {} as QuerySubredditActionTypes)
+    ).toEqual({
       subreddits: []
     });
   });

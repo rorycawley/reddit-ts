@@ -1,12 +1,3 @@
-/* eslint-disable handle-callback-err */
-/* eslint-disable jest/no-disabled-tests */
-/* eslint-disable no-case-declarations */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable jest/expect-expect */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { fork, takeEvery, put, call } from 'redux-saga/effects';
 import { apiGET } from 'src/api/common';
 import { querySubredditsURL } from 'src/api/reddit';
@@ -22,6 +13,8 @@ export const QUERY_SUBREDDITS_FAILURE = `${subredditsQuery} QUERY_SUBREDDITS_FAI
 // ____ ____ ___ _ ____ _  _    ____ ____ ____ ____ ___ ____ ____ ____
 // |__| |     |  | |  | |\ |    |    |__/ |___ |__|  |  |  | |__/ [__
 // |  | |___  |  | |__| | \|    |___ |  \ |___ |  |  |  |__| |  \ ___]
+export interface NoAction {}
+
 export interface QuerySubredditsAction {
   type: string;
   payload: { subreddit: string };
@@ -32,7 +25,7 @@ export interface QuerySubredditsSuccess {
 }
 export interface QuerySubredditsFailure {
   type: string;
-  error: string;
+  error: boolean;
 }
 export type QuerySubredditActionTypes =
   | QuerySubredditsAction
@@ -54,11 +47,9 @@ export const querySubredditsSuccess = (
   payload: { subreddits }
 });
 
-export const querySubredditsFailure = (
-  error: any
-): QuerySubredditActionTypes => ({
+export const querySubredditsFailure = (): QuerySubredditActionTypes => ({
   type: QUERY_SUBREDDITS_FAILURE,
-  error: 'Failed to obtain subreddits query response'
+  error: true
 });
 
 // ____ ____ ___  _  _ ____ ____ ____
@@ -66,7 +57,7 @@ export const querySubredditsFailure = (
 // |  \ |___ |__/ |__| |___ |___ |  \
 export interface SubredditsState {
   subreddits: any[];
-  error?: string;
+  error?: boolean;
 }
 
 const initialSubredditsState: SubredditsState = { subreddits: [] };
@@ -80,7 +71,7 @@ export const subredditsReducer = (
       return {
         ...state,
         subreddits: (action as QuerySubredditsSuccess).payload.subreddits,
-        error: ''
+        error: false
       };
     case QUERY_SUBREDDITS_FAILURE:
       return { ...state, error: (action as QuerySubredditsFailure).error };
@@ -115,7 +106,7 @@ function* querySubredditsWorker({
     yield put(querySubredditsSuccess(json.subreddits));
   } catch (error) {
     // console.log(querySubredditsFailure(error));
-    yield put(querySubredditsFailure(error));
+    yield put(querySubredditsFailure());
   }
 }
 
