@@ -28,7 +28,8 @@ import {
   fetchSubreddits,
   subredditsReducer,
   subredditsSagas,
-  SubredditActionTypes
+  SubredditActionTypes,
+  SET_SUBREDDITS
 } from 'src/store/subreddits';
 import { configureStore } from 'src/store';
 import { querySubredditsURL } from 'src/api/reddit';
@@ -181,71 +182,18 @@ describe('get subredits', () => {
       await expectRedux(store as StoreWithSpy<any, any>)
         .toDispatchAnAction()
         .matching({
-          type: QUERY_SUBREDDITS_SUCCESS,
+          type: '[Subreddits] SET_SUBREDDITS',
           payload: {
             subreddits: [
-              {
-                numSubscribers: 200191,
-                name: 'reactjs',
-                allowedPostTypes: {
-                  images: false,
-                  text: true,
-                  videos: true,
-                  links: true,
-                  spoilers: true
-                },
-                id: 't5_2zldd',
-                primaryColor: '#014980',
-                communityIcon:
-                  'https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png',
-                icon: ''
-              },
-              {
-                numSubscribers: 1154,
-                name: 'ReactJSLearn',
-                allowedPostTypes: {
-                  images: true,
-                  text: true,
-                  videos: true,
-                  links: true,
-                  spoilers: true
-                },
-                id: 't5_3iadr',
-                primaryColor: '',
-                communityIcon: '',
-                icon: ''
-              },
-              {
-                numSubscribers: 538,
-                name: 'reactjsdevelopers',
-                allowedPostTypes: {
-                  images: true,
-                  text: true,
-                  videos: true,
-                  links: true,
-                  spoilers: true
-                },
-                id: 't5_3e9j3',
-                primaryColor: '',
-                communityIcon: '',
-                icon: ''
-              },
-              {
-                numSubscribers: 1750,
-                name: 'reactjs_beginners',
-                allowedPostTypes: {
-                  images: true,
-                  text: true,
-                  videos: true,
-                  links: true,
-                  spoilers: true
-                },
-                id: 't5_3c0ga',
-                primaryColor: '',
-                communityIcon: '',
-                icon: ''
-              }
+              'reactjs',
+              'ReactJSLearn',
+              'reactjsdevelopers',
+              'reactjs_beginners'
             ]
+          },
+          meta: {
+            normalizeKey: null,
+            feature: '[Subreddits]'
           }
         });
 
@@ -258,8 +206,7 @@ describe('get subredits', () => {
               'ReactJSLearn',
               'reactjsdevelopers',
               'reactjs_beginners'
-            ],
-            error: false
+            ]
           }
         });
     });
@@ -299,79 +246,24 @@ describe('get subredits', () => {
       return expectRedux(store as StoreWithSpy<any, any>)
         .toDispatchAnAction()
         .matching({
-          type: QUERY_SUBREDDITS_SUCCESS,
+          type: '[Subreddits] SET_SUBREDDITS',
           payload: {
             subreddits: [
-              {
-                numSubscribers: 200191,
-                name: 'reactjs',
-                allowedPostTypes: {
-                  images: false,
-                  text: true,
-                  videos: true,
-                  links: true,
-                  spoilers: true
-                },
-                id: 't5_2zldd',
-                primaryColor: '#014980',
-                communityIcon:
-                  'https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png',
-                icon: ''
-              },
-              {
-                numSubscribers: 1154,
-                name: 'ReactJSLearn',
-                allowedPostTypes: {
-                  images: true,
-                  text: true,
-                  videos: true,
-                  links: true,
-                  spoilers: true
-                },
-                id: 't5_3iadr',
-                primaryColor: '',
-                communityIcon: '',
-                icon: ''
-              },
-              {
-                numSubscribers: 538,
-                name: 'reactjsdevelopers',
-                allowedPostTypes: {
-                  images: true,
-                  text: true,
-                  videos: true,
-                  links: true,
-                  spoilers: true
-                },
-                id: 't5_3e9j3',
-                primaryColor: '',
-                communityIcon: '',
-                icon: ''
-              },
-              {
-                numSubscribers: 1750,
-                name: 'reactjs_beginners',
-                allowedPostTypes: {
-                  images: true,
-                  text: true,
-                  videos: true,
-                  links: true,
-                  spoilers: true
-                },
-                id: 't5_3c0ga',
-                primaryColor: '',
-                communityIcon: '',
-                icon: ''
-              }
+              'reactjs',
+              'ReactJSLearn',
+              'reactjsdevelopers',
+              'reactjs_beginners'
             ]
+          },
+          meta: {
+            normalizeKey: null,
+            feature: '[Subreddits]'
           }
         });
     });
 
     it('returns a default state for an undefined existing state', () => {
-      expect(
-        subredditsReducer(undefined, {} as SubredditActionTypes)
-      ).toEqual({
+      expect(subredditsReducer(undefined, {} as SubredditActionTypes)).toEqual({
         subreddits: []
       });
     });

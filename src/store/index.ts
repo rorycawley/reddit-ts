@@ -20,7 +20,7 @@ import {
   subredditsReducer
 } from './subreddits';
 
-import { loggerMiddleware } from './middleware';
+import { loggerMiddleware, normalizeMiddleware } from './middleware';
 import { loadState, saveState } from 'src/store/common/localStorage';
 import throttle from 'lodash/throttle';
 import { all } from 'redux-saga/effects';
@@ -50,7 +50,7 @@ function* rootSaga() {
 
 export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
   const sagaMiddleware = createSagaMiddleware();
-  const middlewares = [loggerMiddleware, sagaMiddleware];
+  const middlewares = [loggerMiddleware, sagaMiddleware, normalizeMiddleware];
 
   const store = createStore(
     rootReducer,

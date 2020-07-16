@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { fork, takeEvery, put, call } from 'redux-saga/effects';
 import { apiGET } from '../api/common';
 import { querySubredditsURL as fetchSubredditsURL } from '../api/reddit';
@@ -21,7 +23,7 @@ export interface FetchSubredditsAction {
 export interface SetSubredditsAction {
   type: string;
   payload: { subreddits: any[] };
-  meta: { normalizeKey: string; feature: string };
+  meta: { normalizeKey: string | null; feature: string };
 }
 export interface QuerySubredditsSuccess {
   type: string;
@@ -43,17 +45,26 @@ export const fetchSubreddits = (subreddit: string): SubredditActionTypes => ({
   payload: { subreddit }
 });
 
-export const setSubreddits = ({
-  subreddits,
-  normalizeKey = 'name'
-}: {
-  subreddits: any[];
-  normalizeKey: string;
-}): SubredditActionTypes => ({
-  type: SET_SUBREDDITS,
-  payload: { subreddits },
-  meta: { normalizeKey, feature: SUBREDDITS }
-});
+// export const setSubreddits = ({
+//   subreddits,
+//   normalizeKey = 'name'
+// }: {
+//   subreddits: any[];
+//   normalizeKey: string;
+// }): SubredditActionTypes => ({
+//   type: SET_SUBREDDITS,
+//   payload: { subreddits },
+//   meta: { normalizeKey, feature: SUBREDDITS }
+// });
+export const setSubreddits = (
+  subreddits: any[],
+  normalizeKey: string | null
+): SubredditActionTypes =>
+  ({
+    type: SET_SUBREDDITS,
+    payload: { subreddits },
+    meta: { normalizeKey, feature: SUBREDDITS }
+  } as SetSubredditsAction);
 
 // action to give subreddits response
 export const querySubredditsSuccess = (
@@ -83,16 +94,23 @@ export const subredditsReducer = (
   action: SubredditActionTypes
 ): SubredditsState => {
   switch (action.type) {
-    case QUERY_SUBREDDITS_SUCCESS:
+    case SET_SUBREDDITS:
       return {
         ...state,
-        subreddits: (action as QuerySubredditsSuccess).payload.subreddits,
-        error: false
+        subreddits: (action as SetSubredditsAction).payload.subreddits
       };
-    case QUERY_SUBREDDITS_FAILURE:
-      return { ...state, error: (action as QuerySubredditsFailure).error };
     default:
       return state;
+    // case QUERY_SUBREDDITS_SUCCESS:
+    //   return {
+    //     ...state,
+    //     subreddits: (action as QuerySubredditsSuccess).payload.subreddits,
+    //     error: false
+    //   };
+    // case QUERY_SUBREDDITS_FAILURE:
+    //   return { ...state, error: (action as QuerySubredditsFailure).error };
+    // default:
+    //   return state;
   }
 };
 
@@ -125,7 +143,10 @@ function* fetchSubredditsWorker({
 
     // console.log(JSON.stringify(json.subreddits, null, "  "));
     // console.log(JSON.stringify(querySubredditsSuccess(json)));
-    yield put(querySubredditsSuccess(json.subreddits));
+    // yield put(querySubredditsSuccess(json.subreddits));
+    // console.log('These are the json subreddits', json.subreddits);
+    // console.log('my answer', setSubreddits(json.subreddits));
+    yield put(setSubreddits(json.subreddits, 'name'));
   } catch (error) {
     // console.log(querySubredditsFailure(error));
     yield put(querySubredditsFailure());

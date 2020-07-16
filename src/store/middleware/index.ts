@@ -1,2 +1,4 @@
 import loggerMiddleware from './loggerMiddleware';
-export { loggerMiddleware };
+import normalizeMiddleware from './normalizeMiddleware';
+
+export { loggerMiddleware, normalizeMiddleware };
