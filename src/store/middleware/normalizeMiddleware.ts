@@ -9,11 +9,11 @@ import {
 const NORMALIZING_DATA = 'NORMALIZING_DATA';
 export interface NormalizingDataAction {
   type: string;
-  meta: { feature: string; data: any };
+  meta: { feature: string; data: unknown };
 }
 export const normalizingData = (
   feature: string,
-  data: any
+  data: unknown
 ): NormalizingDataAction => ({
   type: `${feature} ${NORMALIZING_DATA}`,
   meta: { feature, data }
@@ -22,11 +22,11 @@ export const normalizingData = (
 const DATA_NOW_NORMALIZED = 'DATA_NOW_NORMALIZED';
 export interface DataNowNormalizedAction {
   type: string;
-  meta: { feature: string; data: any[] };
+  meta: { feature: string; data: unknown[] };
 }
 export const dataNowNormalized = (
   feature: string,
-  data: any[]
+  data: unknown[]
 ): DataNowNormalizedAction => ({
   type: `${feature} ${DATA_NOW_NORMALIZED}`,
   meta: { feature, data }
@@ -57,7 +57,7 @@ const normalizeMiddleware: Middleware = ({
       dispatch(dataNowNormalized(feature, subredditNames));
 
       // sends the data along with the new normalized data
-      console.log(setSubreddits(subredditNames, true));
+      // console.log(setSubreddits(subredditNames, true));
       return next(setSubreddits(subredditNames, true));
     }
   }

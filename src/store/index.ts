@@ -64,7 +64,7 @@ export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
     const W: any = window; // (window: any) = W;
 
     W.store = store;
-    W.querySubreddits = fetchSubreddits;
+    W.fetchSubreddits = fetchSubreddits;
 
     // http://patorjk.com/software/taag/#p=display&f=ANSI Shadow&t=REDUX
 

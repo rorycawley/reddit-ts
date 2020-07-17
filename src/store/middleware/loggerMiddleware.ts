@@ -7,14 +7,22 @@ const loggerMiddleware: Middleware = ({ getState }: MiddlewareAPI) => (
   const type = action.type as string;
 
   if (env === 'development') {
-    if (type.includes('SET')) {
+    if (type.includes('FETCH')) {
+      console.log(
+        `%c${type}`,
+        'font-weight: bold; background: blue;  color: gainsboro; font-family:sans-serif; font-size: 12px;'
+      );
+    } else if (type.includes('SET')) {
       console.group(
         '%cSTATE CHANGE OCCURING',
         'font-weight: bold; font-size: 12px;color: gainsboro; text-shadow: 3px 3px 0 rgb(217,31,38) '
       );
-    }
-
-    if (type.includes('ERROR')) {
+    } else if (type.includes('SUCCESS')) {
+      console.log(
+        `%c${type}`,
+        'font-weight: bold; background: green;  color: gainsboro; font-family:sans-serif; font-size: 10px;'
+      );
+    } else if (type.includes('ERROR')) {
       console.log(
         `%c${type}`,
         'font-weight: bold; background: crimson;  color: gainsboro; font-family:sans-serif; font-size: 12px;'

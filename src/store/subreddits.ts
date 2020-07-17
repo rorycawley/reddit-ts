@@ -20,7 +20,7 @@ export interface FetchSubredditsAction {
 }
 export interface SetSubredditsAction {
   type: string;
-  payload: { subreddits: any[] };
+  payload: { subreddits: unknown[] };
   meta: { dataNormalized: boolean; feature: string };
 }
 export interface QuerySubredditsSuccess {
@@ -55,7 +55,7 @@ export const fetchSubreddits = (subreddit: string): SubredditActionTypes => ({
 //   meta: { normalizeKey, feature: SUBREDDITS }
 // });
 export const setSubreddits = (
-  subreddits: any[],
+  subreddits: unknown[],
   dataNormalized: boolean
 ): SubredditActionTypes =>
   ({
@@ -79,7 +79,7 @@ export const querySubredditsError = (): SubredditActionTypes => ({
 // |__/ |___ |  \ |  | |    |___ |__/
 // |  \ |___ |__/ |__| |___ |___ |  \
 export interface SubredditsState {
-  subreddits: any[];
+  subreddits: unknown[];
   error?: boolean;
 }
 
@@ -91,24 +91,14 @@ export const subredditsReducer = (
 ): SubredditsState => {
   switch (action.type) {
     case SET_SUBREDDITS:
-      console.log('updating reducer');
-      console.log(action);
+      // console.log('updating reducer');
+      // console.log(action);
       return {
         ...state,
         subreddits: (action as SetSubredditsAction).payload.subreddits
       };
     default:
       return state;
-    // case QUERY_SUBREDDITS_SUCCESS:
-    //   return {
-    //     ...state,
-    //     subreddits: (action as QuerySubredditsSuccess).payload.subreddits,
-    //     error: false
-    //   };
-    // case QUERY_SUBREDDITS_FAILURE:
-    //   return { ...state, error: (action as QuerySubredditsFailure).error };
-    // default:
-    //   return state;
   }
 };
 
@@ -116,18 +106,14 @@ export const subredditsReducer = (
 // [__  |__| | __ |__| [__
 // ___] |  | |__] |  | ___]
 function* fetchSubredditsWorker({
-  type,
-  payload
-}: {
-  type: string;
-  payload: any;
-}) {
+  payload: { subreddit }
+}: FetchSubredditsAction) {
   // yield put({ type: 'GETTING_SUBREDDITS' });
   try {
     // const result = yield call(querySubredditsAPI, action.payload.subreddit);
 
     const result = yield call(apiGET, {
-      url: fetchSubredditsURL(payload.subreddit),
+      url: fetchSubredditsURL(subreddit),
       method: 'GET',
       feature: SUBREDDITS,
       body: null,
