@@ -177,8 +177,8 @@ describe('get subredits', () => {
           }
         });
 
+      // store.dispatch(querySubreddits('reactjs'));
       dispatchRequest('reactjs');
-
       await expectRedux(store as StoreWithSpy<any, any>)
         .toDispatchAnAction()
         .matching({

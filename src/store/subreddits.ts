@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { fork, takeEvery, put, call } from 'redux-saga/effects';
 import { apiGET } from '../api/common';
 import { querySubredditsURL as fetchSubredditsURL } from '../api/reddit';
@@ -93,6 +91,8 @@ export const subredditsReducer = (
 ): SubredditsState => {
   switch (action.type) {
     case SET_SUBREDDITS:
+      console.log('updating reducer');
+      console.log(action);
       return {
         ...state,
         subreddits: (action as SetSubredditsAction).payload.subreddits

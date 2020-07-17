@@ -1,8 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { Dispatch } from 'redux';
+import { Dispatch, AnyAction, Middleware } from 'redux';
 
 import {
   SET_SUBREDDITS,
@@ -10,46 +6,63 @@ import {
   setSubreddits
 } from '../subreddits';
 
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 const NORMALIZING_DATA = 'NORMALIZING_DATA';
-export const normalizingData = (feature: string, data: any) => ({
+export interface NormalizingDataAction {
+  type: string;
+  meta: { feature: string; data: any };
+}
+export const normalizingData = (
+  feature: string,
+  data: any
+): NormalizingDataAction => ({
   type: `${feature} ${NORMALIZING_DATA}`,
   meta: { feature, data }
 });
-const DATA_NORMALIZED = 'DATA_NORMALIZED';
-export const dataNormalized = (feature: string, data: any) => ({
-  type: `${feature} ${DATA_NORMALIZED}`,
+
+const DATA_NOW_NORMALIZED = 'DATA_NOW_NORMALIZED';
+export interface DataNowNormalizedAction {
+  type: string;
+  meta: { feature: string; data: any[] };
+}
+export const dataNowNormalized = (
+  feature: string,
+  data: any[]
+): DataNowNormalizedAction => ({
+  type: `${feature} ${DATA_NOW_NORMALIZED}`,
   meta: { feature, data }
 });
 
-const normalizeMiddleware = ({ dispatch }: { dispatch: Dispatch }) => (
-  next: (action: { type: string }) => void
-) => (action: {
-  type: string;
-  meta: { dataNormalized: boolean; feature: string };
-}) => {
-  if (action.type === SET_SUBREDDITS && !action.meta.dataNormalized) {
-    // dubug message to say we're normalizing this data
-    dispatch(
-      normalizingData(
-        action.meta.feature,
-        (action as SetSubredditsAction).payload.subreddits
-      )
-    );
+const normalizeMiddleware: Middleware = ({
+  dispatch
+}: {
+  dispatch: Dispatch;
+}) => (next: (action: { type: string }) => void) => (action: AnyAction) => {
+  if (action.type === SET_SUBREDDITS) {
+    const {
+      payload: { subreddits },
+      meta: { dataNormalized, feature }
+    } = action as SetSubredditsAction;
 
-    // transform the data structure
-    // alert(JSON.stringify(action.payload));
-    const subreddits: string[] = (action as SetSubredditsAction).payload.subreddits.map(
-      (item: { [name: string]: any }) => item.name
-    );
-    dispatch(dataNormalized(action.meta.feature, subreddits));
+    const subredditsItems = subreddits as Array<{ name: string }>;
 
-    // sends the data along with the new normalized data
-    // console.log(setSubreddits(subreddits, null));
-    next(setSubreddits(subreddits, true));
-  } else {
-    // sends it to the next middleware or to the rootReducer if there are no more middlewares
-    next(action);
+    if (!dataNormalized) {
+      // dubug message to say we're normalizing this data
+      dispatch(normalizingData(feature, subredditsItems));
+
+      // transform the data structure
+      // alert(JSON.stringify(action.payload));
+
+      const subredditNames = subredditsItems.map(item => item.name);
+
+      dispatch(dataNowNormalized(feature, subredditNames));
+
+      // sends the data along with the new normalized data
+      console.log(setSubreddits(subredditNames, true));
+      return next(setSubreddits(subredditNames, true));
+    }
   }
+
+  // sends it to the next middleware or to the rootReducer if there are no more middlewares
+  next(action);
 };
 export default normalizeMiddleware;
