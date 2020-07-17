@@ -12,10 +12,12 @@ type Action = { type: 'SET_SUBREDDIT'; payload: string };
 export const reducer = (state: AppState, action: Action): AppState => {
   switch (action.type) {
     case 'SET_SUBREDDIT':
-      console.info(
-        `%cCTX - SET_SUBREDDIT: "${action.payload}"`,
-        'font-weight: bold;font-family:sans-serif; color: lime; font-size: 12px'
-      );
+      if (process.env.NODE_ENV === 'development') {
+        console.info(
+          `%cCTX - SET_SUBREDDIT: "${action.payload}"`,
+          'font-weight: bold;font-family:sans-serif; color: lime; font-size: 12px'
+        );
+      }
       return { payload: action.payload };
     default:
       throw new Error();
