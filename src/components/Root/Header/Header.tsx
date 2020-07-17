@@ -23,9 +23,11 @@ const Header: FC = () => {
   const classes = useStyles();
 
   return (
-    <AppBar position='static' color='primary'>
+    <AppBar position='static' color='primary' data-testid='header-found-test'>
       <Toolbar>
-        <Typography className={classes.typographyStyles}>
+        <Typography
+          data-testid='header-statevalue'
+          className={classes.typographyStyles}>
           WP Reddit Demo
         </Typography>
         <RedditIcon className={classes.iconStyle} />

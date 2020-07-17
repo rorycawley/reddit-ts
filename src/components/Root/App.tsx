@@ -7,7 +7,9 @@ import SearchBar from './SearchBar';
 import { fetchSubreddits } from '~/store/subreddits';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store';
-
+import Header from './Header';
+import { CssBaseline } from '@material-ui/core';
+import PostListTitle from './PostList/PostListTitle';
 const App: FC = () => {
   const dispatch = useDispatch();
   const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
@@ -15,8 +17,12 @@ const App: FC = () => {
 
   return (
     <SubredditProvider>
-      <h1>hello</h1>
+      <CssBaseline />
+
+      <Header />
+
       <SearchBar />
+      <PostListTitle />
       <button onClick={() => dispatch(fetchSubreddits('reactjs'))}>
         reactjs
       </button>
