@@ -192,7 +192,7 @@ describe('get subredits', () => {
             ]
           },
           meta: {
-            normalizeKey: null,
+            dataNormalized: true,
             feature: '[Subreddits]'
           }
         });
@@ -256,7 +256,7 @@ describe('get subredits', () => {
             ]
           },
           meta: {
-            normalizeKey: null,
+            dataNormalized: true,
             feature: '[Subreddits]'
           }
         });

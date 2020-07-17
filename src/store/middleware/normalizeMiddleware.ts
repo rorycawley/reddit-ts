@@ -26,9 +26,9 @@ const normalizeMiddleware = ({ dispatch }: { dispatch: Dispatch }) => (
   next: (action: { type: string }) => void
 ) => (action: {
   type: string;
-  meta: { normalizeKey: string; feature: string };
+  meta: { dataNormalized: boolean; feature: string };
 }) => {
-  if (action.type === SET_SUBREDDITS && action.meta.normalizeKey) {
+  if (action.type === SET_SUBREDDITS && !action.meta.dataNormalized) {
     // dubug message to say we're normalizing this data
     dispatch(
       normalizingData(
@@ -40,13 +40,13 @@ const normalizeMiddleware = ({ dispatch }: { dispatch: Dispatch }) => (
     // transform the data structure
     // alert(JSON.stringify(action.payload));
     const subreddits: string[] = (action as SetSubredditsAction).payload.subreddits.map(
-      (item: { [x: string]: any }) => item[action.meta.normalizeKey]
+      (item: { [name: string]: any }) => item.name
     );
     dispatch(dataNormalized(action.meta.feature, subreddits));
 
     // sends the data along with the new normalized data
     // console.log(setSubreddits(subreddits, null));
-    next(setSubreddits(subreddits, null));
+    next(setSubreddits(subreddits, true));
   } else {
     // sends it to the next middleware or to the rootReducer if there are no more middlewares
     next(action);

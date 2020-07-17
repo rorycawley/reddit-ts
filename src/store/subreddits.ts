@@ -23,7 +23,7 @@ export interface FetchSubredditsAction {
 export interface SetSubredditsAction {
   type: string;
   payload: { subreddits: any[] };
-  meta: { normalizeKey: string | null; feature: string };
+  meta: { dataNormalized: boolean; feature: string };
 }
 export interface QuerySubredditsSuccess {
   type: string;
@@ -58,12 +58,12 @@ export const fetchSubreddits = (subreddit: string): SubredditActionTypes => ({
 // });
 export const setSubreddits = (
   subreddits: any[],
-  normalizeKey: string | null
+  dataNormalized: boolean
 ): SubredditActionTypes =>
   ({
     type: SET_SUBREDDITS,
     payload: { subreddits },
-    meta: { normalizeKey, feature: SUBREDDITS }
+    meta: { dataNormalized, feature: SUBREDDITS }
   } as SetSubredditsAction);
 
 // action to give subreddits response
@@ -146,7 +146,7 @@ function* fetchSubredditsWorker({
     // yield put(querySubredditsSuccess(json.subreddits));
     // console.log('These are the json subreddits', json.subreddits);
     // console.log('my answer', setSubreddits(json.subreddits));
-    yield put(setSubreddits(json.subreddits, 'name'));
+    yield put(setSubreddits(json.subreddits, false));
   } catch (error) {
     // console.log(querySubredditsFailure(error));
     yield put(querySubredditsError());
