@@ -21,7 +21,7 @@ import {
 } from './subreddits';
 
 import { loggerMiddleware, normalizeMiddleware } from './middleware';
-import { loadState, saveState } from 'src/store/common/localStorage';
+import { loadState, saveState } from './common/localStorage';
 import throttle from 'lodash/throttle';
 import { all } from 'redux-saga/effects';
 import createSagaMiddleware, { SagaIterator } from 'redux-saga';
@@ -50,13 +50,22 @@ function* rootSaga(): SagaIterator {
 }
 
 export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
+  const persistedState = loadState();
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [loggerMiddleware, sagaMiddleware, normalizeMiddleware];
 
   const store = createStore(
     rootReducer,
+    persistedState,
     compose(...[applyMiddleware(...middlewares), ...storeEnhancers])
   ) as Store;
+  // store.subscribe(() => saveState(store.getState()));
+  // only persiste the slices of state that we want
+  store.subscribe(
+    throttle(() => {
+      saveState({ subreddits: store.getState().subreddits });
+    }, 1000)
+  );
 
   sagaMiddleware.run(rootSaga);
 
