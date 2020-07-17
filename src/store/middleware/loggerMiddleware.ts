@@ -22,26 +22,52 @@ import { includes } from 'dist/debug/src.f69400ca';
 //   return result;
 // };
 
-const loggerMiddleware = () => (
+const loggerMiddleware = ({ getState }: { getState: () => void }) => (
   next: (action: { type: string }) => void
 ) => (action: { type: string }) => {
   const env = process.env.NODE_ENV;
 
   if (env === 'development') {
-    // console.group(action.type);
+    if (action.type.includes('SET')) {
+      console.group(
+        '%cSTATE CHANGE OCCURING',
+        'font-weight: bold; font-size: 12px;color: gainsboro; text-shadow: 3px 3px 0 rgb(217,31,38) '
+      );
+    }
 
     if (action.type.includes('ERROR')) {
-      console.log(`%c${action.type}`, 'background: red; color: white');
-    } else if (action.type.includes('SUCCESS')) {
-      console.log(`%c${action.type}`, 'background: green; color: white');
-    } else if (action.type.includes('SET')) {
-      console.log(`%c${action.type}`, 'background: orange; color: white');
-    } else if (action.type.includes('NORMALIZING')) {
-      console.log(`%c${action.type}`, 'background: pink; color: brown');
+      console.log(
+        `%c${action.type}`,
+        'font-weight: bold; background: crimson;  color: gainsboro; font-family:sans-serif; font-size: 12px;'
+      );
     } else {
-      console.log(`%c${action.type}`, 'background: #107896; color: white');
+      console.log(
+        `%c${action.type}`,
+        'font-weight: bold; color: gainsboro; font-family:sans-serif; font-size: 10px;'
+      );
     }
-    // console.groupEnd();
+
+    if (action.type.includes('SET')) {
+      console.log(
+        `%cSTATE CHANGE - PREV STATE: `,
+        'font-weight: bold; color: gainsboro; font-family:sans-serif; font-size: 12px;',
+        getState()
+      );
+
+      // console.groupEnd();
+    }
+    next(action);
+    if (action.type.includes('SET')) {
+      console.log(
+        `%cSTATE CHANGE - NEXT STATE: `,
+        'font-weight: bold; color: gainsboro; font-family:sans-serif; font-size: 12px;',
+        getState()
+      );
+      // console.groupEnd();
+    }
+    if (action.type.includes('SET')) {
+      console.groupEnd();
+    }
     // console.log('%c' + action.type, 'background: #107896; color:white');
     // console.log('%cThis is a green text', 'background: green; color: white');
     // console.log('%cThis is a green text', 'background: red; color: white');
@@ -49,10 +75,7 @@ const loggerMiddleware = () => (
     // console.log(JSON.stringify(action, null, '╴╴╴'));
     // console.log(JSON.stringify(action));
 
-    next(action);
-
     // console.log("NEXT STATE: ");
-    // console.log(getState());
   } else {
     next(action);
   }

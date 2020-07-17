@@ -27,7 +27,7 @@ export interface SetSubredditsAction {
 }
 export interface QuerySubredditsSuccess {
   type: string;
-  payload: { subreddits: any[] };
+  error: boolean;
 }
 export interface QuerySubredditsError {
   type: string;
@@ -67,11 +67,9 @@ export const setSubreddits = (
   } as SetSubredditsAction);
 
 // action to give subreddits response
-export const querySubredditsSuccess = (
-  subreddits: any[]
-): SubredditActionTypes => ({
+export const querySubredditsSuccess = (): SubredditActionTypes => ({
   type: QUERY_SUBREDDITS_SUCCESS,
-  payload: { subreddits }
+  error: false
 });
 
 export const querySubredditsError = (): SubredditActionTypes => ({
@@ -138,6 +136,8 @@ function* fetchSubredditsWorker({
     if (!result.ok) {
       throw new Error(result.status);
     }
+
+    yield put(querySubredditsSuccess());
 
     const json = yield call([result, 'json']);
 
