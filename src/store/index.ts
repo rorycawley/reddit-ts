@@ -27,7 +27,7 @@ import { all } from 'redux-saga/effects';
 import createSagaMiddleware, { SagaIterator } from 'redux-saga';
 
 export interface RootState {
-  subreddits: SubredditsState;
+  readonly subreddits: SubredditsState;
 }
 
 // ██████╗  ██████╗  ██████╗ ████████╗    ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗███████╗██████╗

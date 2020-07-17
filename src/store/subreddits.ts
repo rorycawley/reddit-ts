@@ -1,7 +1,6 @@
 import { fork, takeEvery, put, call } from 'redux-saga/effects';
 import { apiGET } from '../api/common';
 import { querySubredditsURL as fetchSubredditsURL } from '../api/reddit';
-import { string } from 'dist/debug/src.f69400ca';
 import { SagaIterator } from 'redux-saga';
 
 // ____ ____ ___ _ ____ _  _ ____
@@ -81,8 +80,8 @@ export const querySubredditsError = (): SubredditActionTypes => ({
 // |__/ |___ |  \ |  | |    |___ |__/
 // |  \ |___ |__/ |__| |___ |___ |  \
 export interface SubredditsState {
-  subreddits: unknown[];
-  error?: boolean;
+  readonly subreddits: unknown[];
+  readonly error?: boolean;
 }
 
 const initialSubredditsState: SubredditsState = { subreddits: [] };
