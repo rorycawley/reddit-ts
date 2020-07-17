@@ -1,16 +1,11 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   combineReducers,
   createStore,
   applyMiddleware,
   compose,
   StoreEnhancer,
-  Store
+  Store,
+  StoreCreator
 } from 'redux';
 
 import {
@@ -49,16 +44,17 @@ function* rootSaga(): SagaIterator {
   yield all([...subredditsSagas]);
 }
 
-export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
+export const configureStore = (storeEnhancers: StoreEnhancer[] = []): Store => {
   const persistedState = loadState();
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [loggerMiddleware, sagaMiddleware, normalizeMiddleware];
 
-  const store = createStore(
+  const store: Store = createStore(
     rootReducer,
-    persistedState,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    persistedState as any,
     compose(...[applyMiddleware(...middlewares), ...storeEnhancers])
-  ) as Store;
+  );
   // store.subscribe(() => saveState(store.getState()));
   // only persiste the slices of state that we want
   store.subscribe(
@@ -71,6 +67,7 @@ export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
 
   if (process.env.NODE_ENV === 'development') {
     // allow me to play with redux through the console
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const W: any = window; // (window: any) = W;
 
     W.store = store;

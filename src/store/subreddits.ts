@@ -1,4 +1,4 @@
-import { fork, takeEvery, put, call } from 'redux-saga/effects';
+import { fork, takeEvery, put, call, takeLatest } from 'redux-saga/effects';
 import { apiGET } from '../api/common';
 import { querySubredditsURL as fetchSubredditsURL } from '../api/reddit';
 import { SagaIterator } from 'redux-saga';
@@ -148,7 +148,7 @@ function* fetchSubredditsWorker({
 }
 
 function* watchSubredditsRequest(): SagaIterator {
-  yield takeEvery(FETCH_SUBREDDITS, fetchSubredditsWorker);
+  yield takeLatest(FETCH_SUBREDDITS, fetchSubredditsWorker);
 }
 
 export const subredditsSagas = [fork(watchSubredditsRequest)];
