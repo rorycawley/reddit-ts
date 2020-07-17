@@ -1,6 +1,8 @@
 import { fork, takeEvery, put, call } from 'redux-saga/effects';
 import { apiGET } from '../api/common';
 import { querySubredditsURL as fetchSubredditsURL } from '../api/reddit';
+import { string } from 'dist/debug/src.f69400ca';
+import { SagaIterator } from 'redux-saga';
 
 // ____ ____ ___ _ ____ _  _ ____
 // |__| |     |  | |  | |\ | [__
@@ -107,10 +109,17 @@ export const subredditsReducer = (
 // ___] |  | |__] |  | ___]
 function* fetchSubredditsWorker({
   payload: { subreddit }
-}: FetchSubredditsAction) {
+}: FetchSubredditsAction): SagaIterator {
   // yield put({ type: 'GETTING_SUBREDDITS' });
   try {
     // const result = yield call(querySubredditsAPI, action.payload.subreddit);
+    // const result: ReturnType<typeof apiGET> = yield call(apiGET, {
+    //   url: fetchSubredditsURL(subreddit),
+    //   method: 'GET',
+    //   feature: SUBREDDITS,
+    //   body: null,
+    //   timeout: 7000
+    // });
 
     const result = yield call(apiGET, {
       url: fetchSubredditsURL(subreddit),
@@ -139,7 +148,7 @@ function* fetchSubredditsWorker({
   }
 }
 
-function* watchSubredditsRequest() {
+function* watchSubredditsRequest(): SagaIterator {
   yield takeEvery(FETCH_SUBREDDITS, fetchSubredditsWorker);
 }
 

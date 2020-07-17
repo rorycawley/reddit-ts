@@ -24,7 +24,7 @@ import { loggerMiddleware, normalizeMiddleware } from './middleware';
 import { loadState, saveState } from 'src/store/common/localStorage';
 import throttle from 'lodash/throttle';
 import { all } from 'redux-saga/effects';
-import createSagaMiddleware from 'redux-saga';
+import createSagaMiddleware, { SagaIterator } from 'redux-saga';
 
 export interface RootState {
   subreddits: SubredditsState;
@@ -44,7 +44,7 @@ const rootReducer = combineReducers({ subreddits: subredditsReducer });
 // ██╔══██╗██║   ██║██║   ██║   ██║       ╚════██║██╔══██║██║   ██║██╔══██║
 // ██║  ██║╚██████╔╝╚██████╔╝   ██║       ███████║██║  ██║╚██████╔╝██║  ██║
 // ╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝       ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
-function* rootSaga() {
+function* rootSaga(): SagaIterator {
   yield all([...subredditsSagas]);
 }
 
