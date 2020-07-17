@@ -6,6 +6,7 @@ const loggerMiddleware: Middleware = ({ getState }: MiddlewareAPI) => (
   const env = process.env.NODE_ENV;
   const type = action.type as string;
 
+  // https://www.telerik.com/blogs/how-to-style-console-log-contents-in-chrome-devtools
   if (env === 'development') {
     if (type.includes('FETCH')) {
       console.log(

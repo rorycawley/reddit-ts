@@ -30,6 +30,7 @@ export interface RootState {
   readonly subreddits: SubredditsState;
 }
 
+// http://patorjk.com/software/taag/#p=display&f=ANSI Shadow&t=REDUX
 // ██████╗  ██████╗  ██████╗ ████████╗    ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗███████╗██████╗
 // ██╔══██╗██╔═══██╗██╔═══██╗╚══██╔══╝    ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝██╔════╝██╔══██╗
 // ██████╔╝██║   ██║██║   ██║   ██║       ██████╔╝█████╗  ██║  ██║██║   ██║██║     █████╗  ██████╔╝
@@ -65,8 +66,6 @@ export const configureStore = (storeEnhancers: StoreEnhancer[] = []) => {
 
     W.store = store;
     W.fetchSubreddits = fetchSubreddits;
-
-    // http://patorjk.com/software/taag/#p=display&f=ANSI Shadow&t=REDUX
 
     console.info(
       '%cREDUX',
