@@ -1,35 +1,17 @@
-/* eslint-disable handle-callback-err */
-/* eslint-disable jest/no-disabled-tests */
-/* eslint-disable no-case-declarations */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jest/expect-expect */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import 'whatwg-fetch';
 import { storeSpy, expectRedux } from 'expect-redux';
-import { all, put, call } from 'redux-saga/effects';
 
-import {
-  StoreEnhancer,
-  Store,
-  applyMiddleware,
-  compose,
-  createStore,
-  combineReducers
-} from 'redux';
+import { StoreEnhancer, Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { StoreWithSpy } from 'expect-redux/dist/storeSpy';
 import { server, rest } from 'tests/utils/setupMSW';
 import {
-  QUERY_SUBREDDITS_SUCCESS,
   QUERY_SUBREDDITS_ERROR,
   fetchSubreddits,
   subredditsReducer,
-  subredditsSagas,
-  SubredditActionTypes,
-  SET_SUBREDDITS
+  SubredditActionTypes
 } from 'src/store/subreddits';
 import { configureStore } from 'src/store';
 import { querySubredditsURL } from 'src/api/reddit';
@@ -174,7 +156,8 @@ describe('get subredits', () => {
         .matching({
           subreddits: {
             subreddits: []
-          }
+          },
+          ui: { loading: false }
         });
 
       // store.dispatch(querySubreddits('reactjs'));
@@ -207,7 +190,8 @@ describe('get subredits', () => {
               'reactjsdevelopers',
               'reactjs_beginners'
             ]
-          }
+          },
+          ui: { loading: false }
         });
     });
   });
@@ -262,9 +246,13 @@ describe('get subredits', () => {
         });
     });
 
-    it('returns a default state for an undefined existing state', () => {
-      expect(subredditsReducer(undefined, {} as SubredditActionTypes)).toEqual({
-        subreddits: []
+    describe('subreddit reducer', () => {
+      it('returns a default state for an undefined existing state', () => {
+        expect(
+          subredditsReducer(undefined, {} as SubredditActionTypes)
+        ).toEqual({
+          subreddits: []
+        });
       });
     });
   });

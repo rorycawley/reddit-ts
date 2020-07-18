@@ -1,11 +1,11 @@
+/* eslint-disable dot-notation */
 import {
   combineReducers,
   createStore,
   applyMiddleware,
   compose,
   StoreEnhancer,
-  Store,
-  StoreCreator
+  Store
 } from 'redux';
 
 import {
@@ -20,9 +20,20 @@ import { loadState, saveState } from './common/localStorage';
 import throttle from 'lodash/throttle';
 import { all } from 'redux-saga/effects';
 import createSagaMiddleware, { SagaIterator } from 'redux-saga';
+import { UiState, uiReducer } from './ui';
+
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fetchSubreddits: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    store: any;
+  }
+}
 
 export interface RootState {
   readonly subreddits: SubredditsState;
+  readonly ui: UiState;
 }
 
 // http://patorjk.com/software/taag/#p=display&f=ANSI Shadow&t=REDUX
@@ -32,7 +43,10 @@ export interface RootState {
 // ██╔══██╗██║   ██║██║   ██║   ██║       ██╔══██╗██╔══╝  ██║  ██║██║   ██║██║     ██╔══╝  ██╔══██╗
 // ██║  ██║╚██████╔╝╚██████╔╝   ██║       ██║  ██║███████╗██████╔╝╚██████╔╝╚██████╗███████╗██║  ██║
 // ╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝       ╚═╝  ╚═╝╚══════╝╚═════╝  ╚═════╝  ╚═════╝╚══════╝╚═╝  ╚═╝
-const rootReducer = combineReducers({ subreddits: subredditsReducer });
+const rootReducer = combineReducers({
+  subreddits: subredditsReducer,
+  ui: uiReducer
+});
 
 // ██████╗  ██████╗  ██████╗ ████████╗    ███████╗ █████╗  ██████╗  █████╗
 // ██╔══██╗██╔═══██╗██╔═══██╗╚══██╔══╝    ██╔════╝██╔══██╗██╔════╝ ██╔══██╗
@@ -59,7 +73,9 @@ export const configureStore = (storeEnhancers: StoreEnhancer[] = []): Store => {
   // only persiste the slices of state that we want
   store.subscribe(
     throttle(() => {
-      saveState({ subreddits: store.getState().subreddits });
+      saveState({
+        subreddits: (store.getState() as SubredditsState).subreddits as string[]
+      });
     }, 1000)
   );
 
@@ -67,11 +83,8 @@ export const configureStore = (storeEnhancers: StoreEnhancer[] = []): Store => {
 
   if (process.env.NODE_ENV === 'development') {
     // allow me to play with redux through the console
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const W: any = window; // (window: any) = W;
-
-    W.store = store;
-    W.fetchSubreddits = fetchSubreddits;
+    window.fetchSubreddits = fetchSubreddits;
+    window.store = store;
 
     console.info(
       '%cREDUX',

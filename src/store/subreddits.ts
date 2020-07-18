@@ -2,6 +2,7 @@ import { fork, put, call, takeLatest } from 'redux-saga/effects';
 import { apiGET } from '../api/common';
 import { querySubredditsURL as fetchSubredditsURL } from '../api/reddit';
 import { SagaIterator } from 'redux-saga';
+import { setLoader } from './ui';
 
 // ____ ____ ___ _ ____ _  _ ____
 // |__| |     |  | |  | |\ | [__
@@ -110,6 +111,8 @@ function* fetchSubredditsWorker({
   payload: { subreddit }
 }: FetchSubredditsAction): SagaIterator {
   // yield put({ type: 'GETTING_SUBREDDITS' });
+  yield put(setLoader({ loading: true }, SUBREDDITS));
+
   try {
     // const result = yield call(querySubredditsAPI, action.payload.subreddit);
     // const result: ReturnType<typeof apiGET> = yield call(apiGET, {
@@ -127,6 +130,7 @@ function* fetchSubredditsWorker({
       body: null,
       timeout: 7000
     });
+
     if (!result.ok) {
       throw new Error(result.status);
     }
@@ -145,6 +149,8 @@ function* fetchSubredditsWorker({
     // console.log(querySubredditsFailure(error));
     yield put(querySubredditsError());
   }
+
+  yield put(setLoader({ loading: false }, SUBREDDITS));
 }
 
 function* watchSubredditsRequest(): SagaIterator {
