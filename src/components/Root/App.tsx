@@ -1,11 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { FC } from 'react';
-import {
-  SubredditProvider,
-  useSelectedSubreddit
-} from './useSelectedSubreddit';
+import { SubredditProvider } from './useSelectedSubreddit';
 import SearchBar from './SearchBar';
 import { fetchSubreddits } from '~/store/subreddits';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +9,6 @@ import PostListTitle from './PostList/PostListTitle';
 
 import { CssBaseline, Grid, makeStyles } from '@material-ui/core';
 import PostList from './PostList';
-import { Subreddit } from '../../api/reddit/reddit';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -31,13 +24,9 @@ const App: FC = () => {
 
   // redux
   const dispatch = useDispatch();
-  const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
-  const subreddits = useSelector(subredditsSelector);
-
-  // context
-  // const { state } = useSelectedSubreddit();
-
-  // console.log(state);
+  const subredditsSelector = (state: RootState): string[] =>
+    state.subreddits.subreddits as string[];
+  const subreddits = useSelector<RootState, string[]>(subredditsSelector);
 
   return (
     <SubredditProvider>
