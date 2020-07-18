@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import React, { FC, useState, ChangeEvent } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -5,9 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { fetchSubreddits } from '../../store/subreddits';
 
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete, {
+  AutocompleteChangeReason,
+  AutocompleteChangeDetails
+} from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
 import {
@@ -15,27 +19,25 @@ import {
   useSelectedSubreddit
 } from './useSelectedSubreddit';
 
-const dropdownSubreddits = ['all', 'reactjs', 'ireland'];
-
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  }
-});
+// const useStyles = makeStyles({
+//   root: {
+//     minWidth: 275
+//   },
+//   bullet: {
+//     display: 'inline-block',
+//     margin: '0 2px',
+//     transform: 'scale(0.8)'
+//   },
+//   title: {
+//     fontSize: 14
+//   },
+//   pos: {
+//     marginBottom: 12
+//   }
+// });
 
 const SearchBar: FC = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const { dispatch } = useSelectedSubreddit();
   const [open, setOpen] = useState(false);
 
@@ -47,24 +49,26 @@ const SearchBar: FC = () => {
   const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
   const dropdownSubreddits = useSelector(subredditsSelector);
 
-  const selectNewSubreddit = (
+  const selectNewSubreddit: (
     event: ChangeEvent<{}>,
-    newSelectedSubreddit: string | null
-  ) => {
+    value: unknown,
+    reason: AutocompleteChangeReason,
+    details?: AutocompleteChangeDetails<unknown> | undefined
+  ) => void = (_event, newSelectedSubreddit) => {
     if (newSelectedSubreddit !== null) {
-      console.log('newSelectedSubreddit', Event, newSelectedSubreddit);
-      setSearchQuery(newSelectedSubreddit);
-      dispatch(changeSelectedSubreddit(newSelectedSubreddit));
+      // console.log('newSelectedSubreddit', Event, newSelectedSubreddit);
+      setSearchQuery(newSelectedSubreddit as string);
+      dispatch(changeSelectedSubreddit(newSelectedSubreddit as string));
     }
   };
 
   const changeSubredditSearchQuery = (
-    event: ChangeEvent<{}>,
+    _: ChangeEvent<{}>,
     newSubredditQuery: string
   ) => {
     setInputValue(newSubredditQuery);
     if (newSubredditQuery) {
-      console.log('changeSubredditSearchQuery', event, newSubredditQuery);
+      // console.log('changeSubredditSearchQuery', event, newSubredditQuery);
       dispatchRedux(fetchSubreddits(newSubredditQuery));
     }
   };
