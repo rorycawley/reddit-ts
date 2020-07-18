@@ -1,4 +1,4 @@
-import { fork, takeEvery, put, call, takeLatest } from 'redux-saga/effects';
+import { fork, put, call, takeLatest } from 'redux-saga/effects';
 import { apiGET } from '../api/common';
 import { querySubredditsURL as fetchSubredditsURL } from '../api/reddit';
 import { SagaIterator } from 'redux-saga';
