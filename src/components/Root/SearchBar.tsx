@@ -3,8 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { useSubreddit } from './useSubreddit';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-const options = ['Option 1', 'Option 2'];
+const dropdownSubreddits = ['Option 1', 'Option 2'];
 
 const useStyles = makeStyles({
   root: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 const SearchBar: FC = () => {
   const classes = useStyles();
   const { state, dispatch } = useSubreddit();
+  const [open, setOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState<string | null>('');
   const [inputValue, setInputValue] = useState('');
@@ -54,6 +56,11 @@ const SearchBar: FC = () => {
     setInputValue(newInputValue);
   };
 
+  // TODO fix this with REDUX
+  const isLoading = false;
+  // const dropdownSubreddits: string[] = ['one', 'two', 'three']; // getSubredditNames(subreddits);
+  const loading = (open && dropdownSubreddits.length === 0) || isLoading;
+
   return (
     <div>
       <div>{`value: ${
@@ -62,15 +69,40 @@ const SearchBar: FC = () => {
       <div>{`inputValue: '${inputValue}'`}</div>
       <br />
       <Autocomplete
+        clearOnBlur
+        open={open}
+        onOpen={() => {
+          setOpen(true);
+        }}
+        onClose={() => {
+          setOpen(false);
+        }}
         value={searchQuery}
         onChange={selectNewSubreddit}
         inputValue={inputValue}
         onInputChange={changeSubredditSearchQuery}
         id='controllable-states-demo'
-        options={options}
+        options={dropdownSubreddits}
         style={{ width: 300 }}
+        loading={loading}
         renderInput={params => (
-          <TextField {...params} label='Controllable' variant='outlined' />
+          <TextField
+            {...params}
+            label='Search for subreddits...'
+            fullWidth
+            variant='outlined'
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {loading ? (
+                    <CircularProgress color='inherit' size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </>
+              )
+            }}
+          />
         )}
       />
     </div>
