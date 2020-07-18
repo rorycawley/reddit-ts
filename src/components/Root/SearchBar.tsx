@@ -44,8 +44,8 @@ const SearchBar: FC = () => {
 
   // redux
   const dispatchRedux = useDispatch();
-  // const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
-  // const subreddits = useSelector(subredditsSelector);
+  const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
+  const dropdownSubreddits = useSelector(subredditsSelector);
 
   const selectNewSubreddit = (
     event: ChangeEvent<{}>,
@@ -54,19 +54,19 @@ const SearchBar: FC = () => {
     if (newSelectedSubreddit !== null) {
       console.log('newSelectedSubreddit', Event, newSelectedSubreddit);
       setSearchQuery(newSelectedSubreddit);
-      (() => dispatch(changeSelectedSubreddit(newSelectedSubreddit)))();
-      dispatchRedux(fetchSubreddits(newSelectedSubreddit));
-    } else {
-      console.log('selectNewSubreddit', 'Clear searchbar text');
+      dispatch(changeSelectedSubreddit(newSelectedSubreddit));
     }
   };
 
   const changeSubredditSearchQuery = (
     event: ChangeEvent<{}>,
-    newInputValue: string
+    newSubredditQuery: string
   ) => {
-    console.log('changeSubredditSearchQuery', event, newInputValue);
-    setInputValue(newInputValue);
+    setInputValue(newSubredditQuery);
+    if (newSubredditQuery) {
+      console.log('changeSubredditSearchQuery', event, newSubredditQuery);
+      dispatchRedux(fetchSubreddits(newSubredditQuery));
+    }
   };
 
   // TODO fix this with REDUX

@@ -35,9 +35,9 @@ const App: FC = () => {
   const subreddits = useSelector(subredditsSelector);
 
   // context
-  const { state } = useSelectedSubreddit();
+  // const { state } = useSelectedSubreddit();
 
-  console.log(state);
+  // console.log(state);
 
   return (
     <SubredditProvider>
