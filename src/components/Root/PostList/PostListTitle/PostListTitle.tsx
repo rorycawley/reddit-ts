@@ -3,8 +3,7 @@ import { Subreddit } from 'src/entities';
 import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { useSubreddit } from '../../useSubreddit';
-
+import { useSelectedSubreddit } from '../../useSelectedSubreddit';
 const useStyles = makeStyles(() => ({
   heading: {
     paddingLeft: '0px',
@@ -13,19 +12,17 @@ const useStyles = makeStyles(() => ({
 }));
 
 export interface PostListTitleProps {
-  subreddit?: Subreddit;
+  subreddit: Subreddit;
 }
 
-const PostListTitle: FC<PostListTitleProps> = ({
-  subreddit = 'all'
-}: PostListTitleProps) => {
+const PostListTitle: FC = () => {
   const classes = useStyles();
-  const { state } = useSubreddit();
+  const { state } = useSelectedSubreddit();
 
   return (
     <Typography className={classes.heading}>
       Newest posts from
-      <strong> /r/{state.payload}</strong>
+      <strong> /r/{state.selectedSubreddit}</strong>
     </Typography>
   );
 };

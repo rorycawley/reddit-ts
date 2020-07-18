@@ -4,7 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import { useSubreddit } from './useSubreddit';
+import { useSubreddit } from './useSelectedSubreddit';
 import useDebounce from '../../api//useDebounce';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -31,6 +31,7 @@ const SearchBar: FC = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [open, setOpen] = useState(false);
+
   const dispatch = useDispatch();
   const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
   const dropdownSubreddits = useSelector(subredditsSelector);

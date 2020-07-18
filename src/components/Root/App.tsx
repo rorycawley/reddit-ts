@@ -2,7 +2,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { FC } from 'react';
-import { SubredditProvider } from './useSubreddit';
+import {
+  SubredditProvider,
+  useSelectedSubreddit
+} from './useSelectedSubreddit';
 import SearchBar from './SearchBar';
 import { fetchSubreddits } from '~/store/subreddits';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +15,7 @@ import PostListTitle from './PostList/PostListTitle';
 
 import { CssBaseline, Grid, makeStyles } from '@material-ui/core';
 import PostList from './PostList';
+import { Subreddit } from '../../api/reddit/reddit';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -24,9 +28,16 @@ const useStyles = makeStyles(() => ({
 
 const App: FC = () => {
   const classes = useStyles();
+
+  // redux
   const dispatch = useDispatch();
   const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
   const subreddits = useSelector(subredditsSelector);
+
+  // context
+  const { state } = useSelectedSubreddit();
+
+  console.log(state);
 
   return (
     <SubredditProvider>
@@ -39,7 +50,7 @@ const App: FC = () => {
           <Grid item xs={false} sm={2} />
           <Grid item xs={12} sm={8} className={classes.content}>
             <SearchBar />
-            <PostListTitle />
+            <PostListTitle subreddit={state.selectedSubreddit} />
             <PostList />
 
             <button onClick={() => dispatch(fetchSubreddits('reactjs'))}>

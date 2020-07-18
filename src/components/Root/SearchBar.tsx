@@ -2,10 +2,13 @@ import React, { FC, useState, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import { useSubreddit } from './useSubreddit';
+import {
+  useSelectedSubreddit,
+  changeSelectedSubreddit
+} from './useSelectedSubreddit';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const dropdownSubreddits = ['Option 1', 'Option 2'];
+const dropdownSubreddits = ['all', 'reactjs', 'ireland'];
 
 const useStyles = makeStyles({
   root: {
@@ -26,7 +29,7 @@ const useStyles = makeStyles({
 
 const SearchBar: FC = () => {
   const classes = useStyles();
-  const { state, dispatch } = useSubreddit();
+  const { dispatch } = useSelectedSubreddit();
   const [open, setOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState<string | null>('');
@@ -34,15 +37,12 @@ const SearchBar: FC = () => {
 
   const selectNewSubreddit = (
     event: ChangeEvent<{}>,
-    newSearchQuery: string | null
+    newSelectedSubreddit: string | null
   ) => {
-    if (newSearchQuery !== null) {
-      console.log('selectNewSubreddit', Event, newSearchQuery);
-      setSearchQuery(newSearchQuery);
-      dispatch({
-        type: 'SET_SUBREDDIT',
-        payload: newSearchQuery
-      });
+    if (newSelectedSubreddit !== null) {
+      console.log('newSelectedSubreddit', Event, newSelectedSubreddit);
+      setSearchQuery(newSelectedSubreddit);
+      dispatch(changeSelectedSubreddit(newSelectedSubreddit));
     } else {
       console.log('selectNewSubreddit', 'Clear searchbar text');
     }
