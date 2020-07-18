@@ -8,9 +8,22 @@ import { fetchSubreddits } from '~/store/subreddits';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store';
 import Header from './Header';
-import { CssBaseline } from '@material-ui/core';
 import PostListTitle from './PostList/PostListTitle';
+
+import { CssBaseline, Grid, makeStyles } from '@material-ui/core';
+import PostList from './PostList';
+
+const useStyles = makeStyles(() => ({
+  content: {
+    padding: '24px'
+  },
+  typographyStyles: {
+    flex: 1
+  }
+}));
+
 const App: FC = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
   const subreddits = useSelector(subredditsSelector);
@@ -18,20 +31,32 @@ const App: FC = () => {
   return (
     <SubredditProvider>
       <CssBaseline />
+      <Grid container id='Root' direction='column'>
+        <Grid item>
+          <Header />
+        </Grid>
+        <Grid item container>
+          <Grid item xs={false} sm={2} />
+          <Grid item xs={12} sm={8} className={classes.content}>
+            <SearchBar />
+            <PostListTitle />
+            <PostList />
 
-      <Header />
-
-      <SearchBar />
-      <PostListTitle />
-      <button onClick={() => dispatch(fetchSubreddits('reactjs'))}>
-        reactjs
-      </button>
-      <button onClick={() => dispatch(fetchSubreddits('keto'))}>keto</button>
-      <div>
-        {subreddits.map(subreddit => (
-          <div key={subreddit}>{subreddit}</div>
-        ))}
-      </div>
+            <button onClick={() => dispatch(fetchSubreddits('reactjs'))}>
+              reactjs
+            </button>
+            <button onClick={() => dispatch(fetchSubreddits('keto'))}>
+              keto
+            </button>
+            <div>
+              {subreddits.map(subreddit => (
+                <div key={subreddit}>{subreddit}</div>
+              ))}
+            </div>
+          </Grid>
+          <Grid item xs={false} sm={2} />
+        </Grid>
+      </Grid>
     </SubredditProvider>
   );
 };
