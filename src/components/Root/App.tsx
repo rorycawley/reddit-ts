@@ -50,7 +50,7 @@ const App: FC = () => {
           <Grid item xs={false} sm={2} />
           <Grid item xs={12} sm={8} className={classes.content}>
             <SearchBar />
-            <PostListTitle subreddit={state.selectedSubreddit} />
+            <PostListTitle />
             <PostList />
 
             <button onClick={() => dispatch(fetchSubreddits('reactjs'))}>
