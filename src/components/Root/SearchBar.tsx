@@ -66,14 +66,17 @@ const SearchBar: FC = () => {
       setInputValue(newSelectedSubreddit as string);
 
       dispatchContext(changeSelectedSubreddit(newSelectedSubreddit as string));
+    } else {
+      setSearchQuery('');
+      setInputValue('');
     }
   };
 
   const handleTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     // fires on typing, but not when option is selected
     // update our local state
-    // console.log('handleTextFieldChange');
-    // console.log(event, event.target, event.target.value);
+    console.log('handleTextFieldChange');
+    console.log(event, event.target, event.target.value);
     setInputValue(event.target.value);
     dispatchRedux(fetchSubreddits(event.target.value));
   };
