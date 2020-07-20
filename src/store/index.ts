@@ -36,6 +36,11 @@ export interface RootState {
   readonly ui: UiState;
 }
 
+export const initialState: RootState = {
+  subreddits: { subreddits: [] },
+  ui: { loading: false }
+};
+
 // http://patorjk.com/software/taag/#p=display&f=ANSI Shadow&t=REDUX
 // ██████╗  ██████╗  ██████╗ ████████╗    ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗███████╗██████╗
 // ██╔══██╗██╔═══██╗██╔═══██╗╚══██╔══╝    ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝██╔════╝██╔══██╗
@@ -43,7 +48,7 @@ export interface RootState {
 // ██╔══██╗██║   ██║██║   ██║   ██║       ██╔══██╗██╔══╝  ██║  ██║██║   ██║██║     ██╔══╝  ██╔══██╗
 // ██║  ██║╚██████╔╝╚██████╔╝   ██║       ██║  ██║███████╗██████╔╝╚██████╔╝╚██████╗███████╗██║  ██║
 // ╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝       ╚═╝  ╚═╝╚══════╝╚═════╝  ╚═════╝  ╚═════╝╚══════╝╚═╝  ╚═╝
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   subreddits: subredditsReducer,
   ui: uiReducer
 });

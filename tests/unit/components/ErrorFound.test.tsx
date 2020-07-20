@@ -17,14 +17,21 @@ describe('ErrorFound', () => {
 
   it('renders the component with an error message', () => {
     // Arrange
-    const errorMsg =
-      "We apologize for the inconvenience but there's been a temporary problem that will be fixed shortly.";
-    const component = <ErrorFound data-testid='errorfound' error={errorMsg} />;
+    const component = (
+      <ErrorFound
+        data-testid='errorfound'
+        error="We apologize for the inconvenience but there's been a temporary problem that will be fixed shortly."
+      />
+    );
 
     // Act
     render(component);
 
     // Assert
-    expect(screen.getByText(errorMsg)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "We apologize for the inconvenience but there's been a temporary problem that will be fixed shortly."
+      )
+    ).toBeInTheDocument();
   });
 });

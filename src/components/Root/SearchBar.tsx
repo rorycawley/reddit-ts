@@ -103,13 +103,15 @@ const SearchBar: FC = () => {
         onChange={selectNewSubreddit}
         inputValue={inputValue}
         // onInputChange={changeSubredditSearchQuery}
-        id='controllable-states-demo'
+        id='autocomplete-component'
         options={dropdownSubreddits}
         style={{ width: 300 }}
         loading={(open && dropdownSubreddits.length === 0) || loading}
         renderInput={params => (
           <TextField
             {...params}
+            id='autocomplete-input-id'
+            data-testid='autocomplete-input'
             label='Search for subreddits...'
             inputRef={inputField}
             onChange={handleTextFieldChange}
