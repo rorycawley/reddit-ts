@@ -123,6 +123,7 @@ function* fetchSubredditsWorker({
     //   timeout: 7000
     // });
 
+    console.log('fetchSubredditsWorker', subreddit);
     const result = yield call(apiGET, {
       url: fetchSubredditsURL(subreddit),
       method: 'GET',

@@ -22,11 +22,13 @@ export const apiGET = ({
   method: string;
   timeout: number;
   url: string;
-}): Promise<Response> =>
-  Promise.race([
+}): Promise<Response> => {
+  console.log('apiGET', url);
+  return Promise.race([
     window.fetch(url, { body, method }),
     // eslint-disable-next-line promise/param-names
     new Promise((_, reject) =>
       setTimeout(() => reject(new Error(feature + ': timeout')), timeout)
     )
   ]) as Promise<Response>;
+};

@@ -4,6 +4,216 @@ const allNewPostsURL = 'https://www.reddit.com/r/all/new.json?nsfw=0&limit=10';
 const failureURL = 'https://www.reddit.com/r/failure/new.json?nsfw=0&limit=10';
 
 const handlers = [
+  rest.get(
+    'https://www.reddit.com/api/subreddit_autocomplete.json?query=reactjs&include_over_18=0&include_profiles=0',
+    (req, res, context) => {
+      console.log(`MSW sent reactjsUrl response`);
+      return res(
+        context.status(200),
+        context.json({
+          subreddits: [
+            {
+              numSubscribers: 201304,
+              name: 'reactjs',
+              allowedPostTypes: {
+                images: false,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_2zldd',
+              primaryColor: '#014980',
+              communityIcon:
+                'https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png',
+              icon: ''
+            },
+            {
+              numSubscribers: 1158,
+              name: 'ReactJSLearn',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_3iadr',
+              primaryColor: '',
+              communityIcon: '',
+              icon: ''
+            },
+            {
+              numSubscribers: 542,
+              name: 'reactjsdevelopers',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_3e9j3',
+              primaryColor: '',
+              communityIcon: '',
+              icon: ''
+            },
+            {
+              numSubscribers: 1753,
+              name: 'reactjs_beginners',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_3c0ga',
+              primaryColor: '',
+              communityIcon: '',
+              icon: ''
+            }
+          ]
+        })
+      );
+    }
+  ),
+  rest.get(
+    'https://www.reddit.com/api/subreddit_autocomplete.json?query=ireland&include_over_18=0&include_profiles=0',
+    (req, res, context) => {
+      console.log(`MSW sent irelandUrl response`);
+      return res(
+        context.status(200),
+        context.json({
+          subreddits: [
+            {
+              numSubscribers: 287677,
+              name: 'ireland',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_2qhb9',
+              primaryColor: '#00725f',
+              communityIcon: '',
+              icon:
+                'https://b.thumbs.redditmedia.com/MUI-HukVZzYG2eNButTBJOrOxqCXwRtRIvzwKuYzp3o.png'
+            },
+            {
+              numSubscribers: 912,
+              name: 'IrelandGaming',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_3itw1',
+              primaryColor: '#bbbdbf',
+              communityIcon: '',
+              icon:
+                'https://b.thumbs.redditmedia.com/DwlkGDFaU6o9WX_0AZoOLtUFj7fAAhQ081LpZRia1Xg.png'
+            },
+            {
+              numSubscribers: 5908,
+              name: 'IrelandBaldwin',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_2vloo',
+              primaryColor: '',
+              communityIcon: '',
+              icon:
+                'https://a.thumbs.redditmedia.com/IC0mejkWqT4Z1Wd-MMffGm_p-yNp_6ScpHqmPOQL148.png'
+            },
+            {
+              numSubscribers: 300,
+              name: 'IrelandIncorrectlyUK',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_21s7xl',
+              primaryColor: '',
+              communityIcon: '',
+              icon: ''
+            },
+            {
+              numSubscribers: 191,
+              name: 'IrelandR4R',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_31r3i',
+              primaryColor: '',
+              communityIcon: '',
+              icon: ''
+            },
+            {
+              numSubscribers: 5835,
+              name: 'IrelandPics',
+              allowedPostTypes: {
+                images: true,
+                text: false,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_3616f',
+              primaryColor: '',
+              communityIcon: '',
+              icon: ''
+            },
+            {
+              numSubscribers: 4981,
+              name: 'IrelandonReddit',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_3odcd',
+              primaryColor: '',
+              communityIcon: '',
+              icon: ''
+            },
+            {
+              numSubscribers: 120,
+              name: 'IrelandSimpsonsFans',
+              allowedPostTypes: {
+                images: true,
+                text: true,
+                videos: true,
+                links: true,
+                spoilers: true
+              },
+              id: 't5_utius',
+              primaryColor: '',
+              communityIcon: '',
+              icon: ''
+            }
+          ]
+        })
+      );
+    }
+  ),
   rest.get(allNewPostsURL, (req, res, context) => {
     return res(
       context.status(200),
