@@ -15,7 +15,7 @@ const server = setupServer(
 );
 
 beforeAll(() => server.listen());
-afterAll(() => server.close());
 afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 export { server, rest };

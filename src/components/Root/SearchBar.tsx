@@ -59,7 +59,7 @@ const SearchBar: FC = () => {
     reason: AutocompleteChangeReason,
     details?: AutocompleteChangeDetails<unknown> | undefined
   ) => void = (_event, newSelectedSubreddit) => {
-    console.log('selectNewSubreddit ', event);
+    console.log('selectNewSubreddit ');
     if (newSelectedSubreddit !== null) {
       // console.log('newSelectedSubreddit', Event, newSelectedSubreddit);
       setSearchQuery(newSelectedSubreddit as string);
@@ -75,8 +75,8 @@ const SearchBar: FC = () => {
   const handleTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     // fires on typing, but not when option is selected
     // update our local state
-    console.log('handleTextFieldChange');
-    console.log(event, event.target, event.target.value);
+    console.log('handleTextFieldChange', event.target.value);
+    // console.log(event, event.target, event.target.value);
     setInputValue(event.target.value);
     dispatchRedux(fetchSubreddits(event.target.value));
   };
