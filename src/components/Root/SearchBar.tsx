@@ -38,7 +38,7 @@ import {
 
 const SearchBar: FC = () => {
   // const classes = useStyles();
-  const { dispatch } = useSelectedSubreddit();
+  const [, dispatchContext] = useSelectedSubreddit();
   const [open, setOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState<string | null>('');
@@ -58,7 +58,7 @@ const SearchBar: FC = () => {
     if (newSelectedSubreddit !== null) {
       // console.log('newSelectedSubreddit', Event, newSelectedSubreddit);
       setSearchQuery(newSelectedSubreddit as string);
-      dispatch(changeSelectedSubreddit(newSelectedSubreddit as string));
+      dispatchContext(changeSelectedSubreddit(newSelectedSubreddit as string));
     }
   };
 

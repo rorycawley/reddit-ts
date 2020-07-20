@@ -17,7 +17,7 @@ export interface PostListTitleProps {
 
 const PostListTitle: FC = () => {
   const classes = useStyles();
-  const { state } = useSelectedSubreddit();
+  const [state] = useSelectedSubreddit();
 
   return (
     <Typography className={classes.heading}>

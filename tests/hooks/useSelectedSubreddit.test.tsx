@@ -17,7 +17,7 @@ import {
 import React, { FC } from 'react';
 
 const SelectedSubRedditHookTester: FC = () => {
-  const { state, dispatch } = useSelectedSubreddit();
+  const [state, dispatch] = useSelectedSubreddit();
   return (
     <>
       <div data-testid='statevalue'>{state.selectedSubreddit}</div>{' '}
@@ -31,17 +31,17 @@ const SelectedSubRedditHookTester: FC = () => {
 };
 
 //  import from './useSubreddit';
-describe('useSubreddit', () => {
+describe('useSelectedSubreddit', () => {
   it('check default value of subreddit', () => {
     // react hook testing
     const { result } = renderHook(() => useSelectedSubreddit());
 
     // check what's returned from the hook
-    expect(typeof result.current.state.selectedSubreddit).toBe('string');
-    expect(typeof result.current.dispatch).toBe('function');
+    expect(typeof result.current[0].selectedSubreddit).toBe('string');
+    expect(typeof result.current[1]).toBe('function');
 
     // check the default value
-    const selectedSubreddit: string = result.current.state.selectedSubreddit;
+    const selectedSubreddit: string = result.current[0].selectedSubreddit;
     expect(selectedSubreddit).toEqual('all');
   });
 });

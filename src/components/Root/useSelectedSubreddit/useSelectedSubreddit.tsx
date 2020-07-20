@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, Dispatch } from 'react';
 
 import createCtx from './createCtx';
 
@@ -54,18 +54,14 @@ export const SubredditContext = ctx;
 
 export default SubredditProvider;
 
-export const useSelectedSubreddit: () => {
-  state: SelectedSubredditState;
-  dispatch: React.Dispatch<ChangeSelectedSubredditAction>;
-} = (): {
-  state: SelectedSubredditState;
-  dispatch: React.Dispatch<ChangeSelectedSubredditAction>;
-} => {
-  const context = useContext(SubredditContext);
-  if (context === undefined) {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const useSelectedSubreddit = () => {
+  try {
+    const { state, dispatch } = useContext(SubredditContext);
+    return [state, dispatch] as const;
+  } catch (e) {
     throw new Error(
       'useSelectedSubreddit must be used within a SubredditProvider'
     );
   }
-  return context;
 };
