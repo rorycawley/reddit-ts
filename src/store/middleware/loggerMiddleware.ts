@@ -1,4 +1,5 @@
 import { Middleware, AnyAction, Dispatch, MiddlewareAPI } from 'redux';
+import { UiActionTypes } from '../ui';
 
 const loggerMiddleware: Middleware = ({ getState }: MiddlewareAPI) => (
   next: Dispatch<AnyAction>
@@ -6,12 +7,18 @@ const loggerMiddleware: Middleware = ({ getState }: MiddlewareAPI) => (
   const env = process.env.NODE_ENV;
   const type = action.type as string;
 
-  // https://www.telerik.com/blogs/how-to-style-console-log-contents-in-chrome-devtools
   if (env === 'development') {
+    // https://www.telerik.com/blogs/how-to-style-console-log-contents-in-chrome-devtools
     if (type.includes('FETCH')) {
       console.log(
         `%c${type}`,
         'font-weight: bold; background: blue;  color: gainsboro; font-family:sans-serif; font-size: 12px;'
+      );
+    } else if (type.includes('SET_LOADER')) {
+      console.group(
+        `%c${type} ` +
+          ((action as UiActionTypes).payload.loading ? '🔄' : '👌'),
+        'font-weight: bold; color: gainsboro; font-family:sans-serif; font-size: 10px;'
       );
     } else if (type.includes('SET')) {
       console.group(

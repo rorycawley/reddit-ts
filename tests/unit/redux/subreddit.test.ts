@@ -4,7 +4,6 @@ import 'whatwg-fetch';
 import { storeSpy, expectRedux } from 'expect-redux';
 
 import { StoreEnhancer, Store } from 'redux';
-import createSagaMiddleware from 'redux-saga';
 import { StoreWithSpy } from 'expect-redux/dist/storeSpy';
 import { server, rest } from 'tests/utils/setupMSW';
 import {
@@ -19,7 +18,6 @@ import { querySubredditsURL } from 'src/api/reddit';
 describe('get subredits', () => {
   let store: Store;
 
-  const noSubreddits = { subreddits: [] };
   const reactjsSubreddits = {
     subreddits: [
       {
