@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import React, { FC, useState, ChangeEvent } from 'react';
+import React, { FC, useState, ChangeEvent, useRef } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -37,17 +37,21 @@ import {
 // });
 
 const SearchBar: FC = () => {
+  const inputField = useRef<HTMLInputElement>();
+
   // const classes = useStyles();
   const [, dispatchContext] = useSelectedSubreddit();
   const [open, setOpen] = useState(false);
 
-  const [searchQuery, setSearchQuery] = useState<string | null>('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [inputValue, setInputValue] = useState('');
 
   // redux
   const dispatchRedux = useDispatch();
   const subredditsSelector = (state: RootState) => state.subreddits.subreddits;
   const dropdownSubreddits = useSelector(subredditsSelector);
+  const loadingSelector = (state: RootState) => state.ui.loading;
+  const loading = useSelector(loadingSelector);
 
   const selectNewSubreddit: (
     event: ChangeEvent<{}>,
@@ -55,28 +59,24 @@ const SearchBar: FC = () => {
     reason: AutocompleteChangeReason,
     details?: AutocompleteChangeDetails<unknown> | undefined
   ) => void = (_event, newSelectedSubreddit) => {
+    console.log('selectNewSubreddit ', event);
     if (newSelectedSubreddit !== null) {
       // console.log('newSelectedSubreddit', Event, newSelectedSubreddit);
       setSearchQuery(newSelectedSubreddit as string);
+      setInputValue(newSelectedSubreddit as string);
+
       dispatchContext(changeSelectedSubreddit(newSelectedSubreddit as string));
     }
   };
 
-  const changeSubredditSearchQuery = (
-    _: ChangeEvent<{}>,
-    newSubredditQuery: string
-  ) => {
-    setInputValue(newSubredditQuery);
-    if (newSubredditQuery) {
-      // console.log('changeSubredditSearchQuery', event, newSubredditQuery);
-      dispatchRedux(fetchSubreddits(newSubredditQuery));
-    }
+  const handleTextFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // fires on typing, but not when option is selected
+    // update our local state
+    // console.log('handleTextFieldChange');
+    // console.log(event, event.target, event.target.value);
+    setInputValue(event.target.value);
+    dispatchRedux(fetchSubreddits(event.target.value));
   };
-
-  // TODO fix this with REDUX
-  const isLoading = false;
-  // const dropdownSubreddits: string[] = ['one', 'two', 'three']; // getSubredditNames(subreddits);
-  const loading = (open && dropdownSubreddits.length === 0) || isLoading;
 
   return (
     <div>
@@ -86,6 +86,8 @@ const SearchBar: FC = () => {
       <div>{`inputValue: '${inputValue}'`}</div>
       <br />
       <Autocomplete
+        handleHomeEndKeys
+        selectOnFocus
         clearOnBlur
         open={open}
         onOpen={() => {
@@ -97,15 +99,17 @@ const SearchBar: FC = () => {
         value={searchQuery}
         onChange={selectNewSubreddit}
         inputValue={inputValue}
-        onInputChange={changeSubredditSearchQuery}
+        // onInputChange={changeSubredditSearchQuery}
         id='controllable-states-demo'
         options={dropdownSubreddits}
         style={{ width: 300 }}
-        loading={loading}
+        loading={(open && dropdownSubreddits.length === 0) || loading}
         renderInput={params => (
           <TextField
             {...params}
             label='Search for subreddits...'
+            inputRef={inputField}
+            onChange={handleTextFieldChange}
             fullWidth
             variant='outlined'
             InputProps={{
