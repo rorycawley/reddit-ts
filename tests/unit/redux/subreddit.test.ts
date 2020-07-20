@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jest/expect-expect */
-import 'whatwg-fetch';
+// import 'whatwg-fetch';
 import { storeSpy, expectRedux } from 'expect-redux';
 
 import { StoreEnhancer, Store } from 'redux';

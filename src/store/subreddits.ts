@@ -1,6 +1,6 @@
 import { fork, put, call, takeLatest } from 'redux-saga/effects';
 import { apiGET } from '../api/common';
-import { querySubredditsURL as fetchSubredditsURL } from '../api/reddit';
+import { querySubredditsURL } from '../api/reddit';
 import { SagaIterator } from 'redux-saga';
 import { setLoader } from './ui';
 
@@ -11,7 +11,7 @@ const SUBREDDITS = '[Subreddits]';
 export const FETCH_SUBREDDITS = `${SUBREDDITS} FETCH_SUBREDDITS`;
 export const SET_SUBREDDITS = `${SUBREDDITS} SET_SUBREDDITS`;
 export const QUERY_SUBREDDITS_SUCCESS = `${SUBREDDITS} QUERY_SUBREDDITS_SUCCESS`;
-export const QUERY_SUBREDDITS_ERROR = `${SUBREDDITS} QUERY_SUBREDDITS_ERROR`; // action to get subreddits
+export const QUERY_SUBREDDITS_ERROR = `${SUBREDDITS} QUERY_SUBREDDITS_ERROR`;
 
 // ____ ____ ___ _ ____ _  _    ____ ____ ____ ____ ___ ____ ____ ____
 // |__| |     |  | |  | |\ |    |    |__/ |___ |__|  |  |  | |__/ [__
@@ -45,17 +45,6 @@ export const fetchSubreddits = (subreddit: string): SubredditActionTypes => ({
   payload: { subreddit }
 });
 
-// export const setSubreddits = ({
-//   subreddits,
-//   normalizeKey = 'name'
-// }: {
-//   subreddits: any[];
-//   normalizeKey: string;
-// }): SubredditActionTypes => ({
-//   type: SET_SUBREDDITS,
-//   payload: { subreddits },
-//   meta: { normalizeKey, feature: SUBREDDITS }
-// });
 export const setSubreddits = (
   subreddits: unknown[],
   dataNormalized: boolean
@@ -125,7 +114,7 @@ function* fetchSubredditsWorker({
 
     console.log('fetchSubredditsWorker', subreddit);
     const result = yield call(apiGET, {
-      url: fetchSubredditsURL(subreddit),
+      url: querySubredditsURL(subreddit),
       method: 'GET',
       feature: SUBREDDITS,
       body: null,

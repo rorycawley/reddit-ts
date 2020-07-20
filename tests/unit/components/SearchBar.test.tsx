@@ -40,7 +40,7 @@ describe('SearchBar', () => {
     // check the input box is set to 'reactjs'
     expect(screen.getByRole('textbox')).toHaveValue('reactjs');
 
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    // expect(screen.getByText('Loading…')).toBeInTheDocument();
 
     expect(await screen.findByText('reactjsdevelopers')).toBeTruthy();
 
@@ -65,7 +65,7 @@ describe('SearchBar', () => {
     // check the input box is set to 'reactjs'
     expect(screen.getByRole('textbox')).toHaveValue('reactjs');
 
-    expect(await screen.findByText('Loading…')).toBeTruthy();
+    // expect(await screen.findByText('Loading…')).toBeTruthy();
 
     expect(await screen.findByText('reactjsdevelopers')).toBeTruthy();
 
@@ -81,8 +81,7 @@ describe('SearchBar', () => {
     // // check the input box is set to 'reactjs'
     expect(screen.getByRole('textbox')).toHaveValue('ireland');
 
-    // expect(screen.getByText('Loading…')).toBeInTheDocument();
-    expect(await screen.findByText('Loading…')).toBeTruthy();
+    // expect(await screen.findByText('Loading…')).toBeTruthy();
 
     // screen.debug();
     expect(await screen.findByText('IrelandBaldwin')).toBeTruthy();
