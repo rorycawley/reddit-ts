@@ -1,22 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { storeSpy, expectRedux } from 'expect-redux';
 import { StoreEnhancer, Store } from 'redux';
 import { configureStore } from 'src/store';
 import { Provider } from 'react-redux';
 import React from 'react';
-// import renderer from 'react-test-renderer'; // ES6
-import {
-  render,
-  screen,
-  RenderResult,
-  fireEvent
-} from '@testing-library/react';
+
+import { render, screen, fireEvent } from '@testing-library/react';
 import SearchBar from 'src/components/Root/SearchBar';
 import { StoreWithSpy } from 'expect-redux/dist/storeSpy';
 
 describe('SearchBar', () => {
   let store: Store;
-  // let component;
-  // let documentBody: RenderResult;
 
   beforeEach(() => {
     store = configureStore([storeSpy as StoreEnhancer]);
@@ -94,6 +88,6 @@ describe('SearchBar', () => {
     expect(screen.getByText('reactjsdevelopers')).toBeInTheDocument();
     expect(screen.getByText('reactjs_beginners')).toBeInTheDocument();
     // console.log(items);
-    screen.debug();
+    // screen.debug();
   });
 });

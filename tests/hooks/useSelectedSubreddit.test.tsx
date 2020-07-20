@@ -7,7 +7,7 @@ import {
   useSelectedSubreddit,
   SubredditProvider,
   changeSelectedSubreddit
-} from '~components/Root/useSelectedSubreddit';
+} from 'src/components/Root/useSelectedSubreddit';
 import {
   getByTestId,
   render,
