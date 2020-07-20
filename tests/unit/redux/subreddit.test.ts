@@ -5,7 +5,7 @@ import { storeSpy, expectRedux } from 'expect-redux';
 
 import { StoreEnhancer, Store } from 'redux';
 import { StoreWithSpy } from 'expect-redux/dist/storeSpy';
-import { server, rest } from 'tests/utils/setupMSW';
+
 import {
   QUERY_SUBREDDITS_ERROR,
   fetchSubreddits,
@@ -14,6 +14,8 @@ import {
 } from 'src/store/subreddits';
 import { configureStore } from 'src/store';
 import { querySubredditsURL } from 'src/api/reddit';
+import { server } from 'tests/utils/setupTests';
+import { rest } from 'tests/utils/handlers';
 
 describe('get subredits', () => {
   let store: Store;

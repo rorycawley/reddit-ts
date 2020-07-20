@@ -5,214 +5,11 @@ import { StoreEnhancer, Store } from 'redux';
 import { configureStore } from 'src/store';
 import { Provider } from 'react-redux';
 import React from 'react';
-import { server, rest } from 'tests/utils/setupMSW';
+// import { server, rest } from 'tests/utils/setupMSW';
 
-import {
-  render,
-  screen,
-  fireEvent,
-  cleanup,
-  waitFor
-} from '@testing-library/react';
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import SearchBar from 'src/components/Root/SearchBar';
 import { StoreWithSpy } from 'expect-redux/dist/storeSpy';
-// import { querySubredditsURL } from 'src/api/reddit';
-
-// const irelandSubreddits = {
-//   subreddits: [
-//     {
-//       numSubscribers: 287677,
-//       name: 'ireland',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_2qhb9',
-//       primaryColor: '#00725f',
-//       communityIcon: '',
-//       icon:
-//         'https://b.thumbs.redditmedia.com/MUI-HukVZzYG2eNButTBJOrOxqCXwRtRIvzwKuYzp3o.png'
-//     },
-//     {
-//       numSubscribers: 912,
-//       name: 'IrelandGaming',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_3itw1',
-//       primaryColor: '#bbbdbf',
-//       communityIcon: '',
-//       icon:
-//         'https://b.thumbs.redditmedia.com/DwlkGDFaU6o9WX_0AZoOLtUFj7fAAhQ081LpZRia1Xg.png'
-//     },
-//     {
-//       numSubscribers: 5908,
-//       name: 'IrelandBaldwin',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_2vloo',
-//       primaryColor: '',
-//       communityIcon: '',
-//       icon:
-//         'https://a.thumbs.redditmedia.com/IC0mejkWqT4Z1Wd-MMffGm_p-yNp_6ScpHqmPOQL148.png'
-//     },
-//     {
-//       numSubscribers: 300,
-//       name: 'IrelandIncorrectlyUK',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_21s7xl',
-//       primaryColor: '',
-//       communityIcon: '',
-//       icon: ''
-//     },
-//     {
-//       numSubscribers: 191,
-//       name: 'IrelandR4R',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_31r3i',
-//       primaryColor: '',
-//       communityIcon: '',
-//       icon: ''
-//     },
-//     {
-//       numSubscribers: 5835,
-//       name: 'IrelandPics',
-//       allowedPostTypes: {
-//         images: true,
-//         text: false,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_3616f',
-//       primaryColor: '',
-//       communityIcon: '',
-//       icon: ''
-//     },
-//     {
-//       numSubscribers: 4981,
-//       name: 'IrelandonReddit',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_3odcd',
-//       primaryColor: '',
-//       communityIcon: '',
-//       icon: ''
-//     },
-//     {
-//       numSubscribers: 120,
-//       name: 'IrelandSimpsonsFans',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_utius',
-//       primaryColor: '',
-//       communityIcon: '',
-//       icon: ''
-//     }
-//   ]
-// };
-// const reactjsSubreddits = {
-//   subreddits: [
-//     {
-//       numSubscribers: 201304,
-//       name: 'reactjs',
-//       allowedPostTypes: {
-//         images: false,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_2zldd',
-//       primaryColor: '#014980',
-//       communityIcon:
-//         'https://styles.redditmedia.com/t5_2zldd/styles/communityIcon_fbblpo38vy941.png',
-//       icon: ''
-//     },
-//     {
-//       numSubscribers: 1158,
-//       name: 'ReactJSLearn',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_3iadr',
-//       primaryColor: '',
-//       communityIcon: '',
-//       icon: ''
-//     },
-//     {
-//       numSubscribers: 542,
-//       name: 'reactjsdevelopers',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_3e9j3',
-//       primaryColor: '',
-//       communityIcon: '',
-//       icon: ''
-//     },
-//     {
-//       numSubscribers: 1753,
-//       name: 'reactjs_beginners',
-//       allowedPostTypes: {
-//         images: true,
-//         text: true,
-//         videos: true,
-//         links: true,
-//         spoilers: true
-//       },
-//       id: 't5_3c0ga',
-//       primaryColor: '',
-//       communityIcon: '',
-//       icon: ''
-//     }
-//   ]
-// };
-// const testResponse = reactjsSubreddits;
-// const reactjsUrl = querySubredditsURL('reactjs');
-// const irelandUrl = querySubredditsURL('ireland');
 
 describe('SearchBar', () => {
   let store: Store;
@@ -459,11 +256,11 @@ describe('SearchBar', () => {
             'ireland',
             'IrelandGaming',
             'IrelandBaldwin',
-            'IrelandAssistance',
+            'IrelandIncorrectlyUK',
+            'IrelandR4R',
             'IrelandPics',
             'IrelandonReddit',
-            'IrelandJournalism',
-            'irelandjobs'
+            'IrelandSimpsonsFans'
           ]
         },
         ui: { loading: false }
@@ -482,13 +279,13 @@ describe('SearchBar', () => {
     expect(await screen.findByText(/IrelandGaming/i)).toBeTruthy();
 
     expect(screen.getByRole('listbox').children).toHaveLength(8);
-    // expect(screen.getByText('ireland')).toBeInTheDocument();
+    expect(screen.getByText('ireland')).toBeInTheDocument();
     expect(screen.getByText('IrelandGaming')).toBeInTheDocument();
     expect(screen.getByText('IrelandBaldwin')).toBeInTheDocument();
-    // expect(screen.getByText('IrelandIncorrectlyUK')).toBeInTheDocument();
-    // expect(screen.getByText('IrelandR4R')).toBeInTheDocument();
+    expect(screen.getByText('IrelandIncorrectlyUK')).toBeInTheDocument();
+    expect(screen.getByText('IrelandR4R')).toBeInTheDocument();
     expect(screen.getByText('IrelandPics')).toBeInTheDocument();
     expect(screen.getByText('IrelandonReddit')).toBeInTheDocument();
-    // expect(screen.getByText('IrelandSimpsonsFans')).toBeInTheDocument();
+    expect(screen.getByText('IrelandSimpsonsFans')).toBeInTheDocument();
   });
 });
