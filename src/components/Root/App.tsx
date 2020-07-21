@@ -27,6 +27,7 @@ const AppWrapper = styled.div`
 const AppHeader = styled.div`
   background-color: white;
   margin: 0;
+  padding: 20px;
 `;
 
 const InstagramLogo = styled.img`
