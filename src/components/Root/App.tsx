@@ -26,6 +26,10 @@ const AppHeader = styled.div`
   margin: 0;
 `;
 
+const InstagramLogo = styled.img`
+  object-fit: contain;
+`;
+
 const useStyles = makeStyles(() => ({
   content: {
     padding: '24px'
@@ -50,6 +54,10 @@ const App: FC = () => {
       <AppWrapper>
         <AppHeader>
           <h1>Hello there</h1>
+          <InstagramLogo
+            alt={`Instagram logo`}
+            src={`https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png`}
+          />
         </AppHeader>
         <Grid container id='Root' direction='column'>
           <Grid item>
