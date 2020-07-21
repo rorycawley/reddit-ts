@@ -20,9 +20,11 @@ const GlobalStyle = createGlobalStyle`
 
 const AppWrapper = styled.div`
   margin: 0;
+  background-color: #fafafa;
 `;
 
 const AppHeader = styled.div`
+  background-color: white;
   margin: 0;
 `;
 
@@ -53,12 +55,12 @@ const App: FC = () => {
       <CssBaseline />
       <AppWrapper>
         <AppHeader>
-          <h1>Hello there</h1>
           <InstagramLogo
             alt={`Instagram logo`}
             src={`https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png`}
           />
         </AppHeader>
+        <h1>Hello there</h1>
         <Grid container id='Root' direction='column'>
           <Grid item>
             <Header />
