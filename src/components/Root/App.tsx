@@ -21,6 +21,7 @@ const GlobalStyle = createGlobalStyle`
 const AppWrapper = styled.div`
   margin: 0;
   background-color: #fafafa;
+  height: 100vh;
 `;
 
 const AppHeader = styled.div`
