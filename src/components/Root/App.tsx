@@ -10,6 +10,7 @@ import PostListTitle from './PostList/PostListTitle';
 import { CssBaseline, Grid, makeStyles } from '@material-ui/core';
 import PostList from './PostList';
 import styled, { createGlobalStyle } from 'styled-components';
+import InPost from './InPost';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -64,6 +65,7 @@ const App: FC = () => {
           />
         </AppHeader>
         <h1>Hello there</h1>
+        <InPost />
         <Grid container id='Root' direction='column'>
           <Grid item>
             <Header />
