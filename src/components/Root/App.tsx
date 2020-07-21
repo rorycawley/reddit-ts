@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
 const AppWrapper = styled.div`
   margin: 0;
   background-color: #fafafa;
-  height: 100vh;
+  /* height: 100vh; */
 `;
 
 const AppHeader = styled.div`
@@ -66,6 +66,9 @@ const App: FC = () => {
         </AppHeader>
         <h1>Hello there</h1>
         <InPost />
+        <InPost />
+        <InPost />
+
         <Grid container id='Root' direction='column'>
           <Grid item>
             <Header />

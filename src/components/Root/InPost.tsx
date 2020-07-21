@@ -6,6 +6,7 @@ const Post = styled.div`
   background-color: white;
   max-width: 500px;
   border: 1px solid lightgrey;
+  margin-bottom: 45px;
 `;
 
 const PostAvatar = styled(Avatar)`
